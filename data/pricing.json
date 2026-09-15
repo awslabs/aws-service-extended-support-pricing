@@ -1,0 +1,2057 @@
+{
+  "schemaVersion": "1.0",
+  "lastUpdated": "2026-09-13",
+  "_disclaimer": "This is community-maintained data, NOT an official AWS API. Verify rates against sourceUrl before making financial decisions. Does not account for EDPs, private pricing, or credits. For production use, pin to a tagged release rather than tracking main branch.",
+  "services": [
+    {
+      "serviceCode": "eks",
+      "serviceName": "Amazon EKS",
+      "engine": null,
+      "pricingUnit": "cluster-hour",
+      "formula": "rate x clusters x hours",
+      "tiers": [
+        {
+          "label": "Extended Support",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            12
+          ],
+          "rate": 0.6
+        }
+      ],
+      "notes": "Standard rate is $0.10/cluster-hour. Extended Support adds $0.50/cluster-hour for a total of $0.60/cluster-hour.",
+      "sourceUrl": "https://aws.amazon.com/eks/pricing/",
+      "resourceInputs": [
+        {
+          "field": "clusters",
+          "source": "clusterCount",
+          "description": "Number of EKS clusters running this version"
+        }
+      ]
+    },
+    {
+      "serviceCode": "rds",
+      "serviceName": "Amazon RDS",
+      "engine": "mysql",
+      "pricingUnit": "vCPU-hour",
+      "formula": "tierRate x vCPUs x hours",
+      "tiers": [
+        {
+          "label": "Year 1-2",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            24
+          ],
+          "rateByRegion": true
+        },
+        {
+          "label": "Year 3",
+          "monthsFromEndOfStandardSupport": [
+            24,
+            36
+          ],
+          "rateByRegion": true,
+          "multiplier": 2.0
+        }
+      ],
+      "regionalRates": {
+        "us-east-1": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-east-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-west-2": {
+          "year1_2": 0.118,
+          "year3": 0.235
+        },
+        "eu-west-3": {
+          "year1_2": 0.118,
+          "year3": 0.235
+        },
+        "eu-central-1": {
+          "year1_2": 0.122,
+          "year3": 0.244
+        },
+        "eu-central-2": {
+          "year1_2": 0.134,
+          "year3": 0.269
+        },
+        "eu-north-1": {
+          "year1_2": 0.103,
+          "year3": 0.206
+        },
+        "eu-south-1": {
+          "year1_2": 0.118,
+          "year3": 0.235
+        },
+        "eu-south-2": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "ap-northeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-northeast-2": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-northeast-3": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-2": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-3": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-4": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-south-1": {
+          "year1_2": 0.114,
+          "year3": 0.228
+        },
+        "ap-south-2": {
+          "year1_2": 0.114,
+          "year3": 0.228
+        },
+        "ap-east-1": {
+          "year1_2": 0.132,
+          "year3": 0.264
+        },
+        "ca-central-1": {
+          "year1_2": 0.108,
+          "year3": 0.216
+        },
+        "sa-east-1": {
+          "year1_2": 0.21,
+          "year3": 0.419
+        },
+        "me-south-1": {
+          "year1_2": 0.123,
+          "year3": 0.246
+        },
+        "me-central-1": {
+          "year1_2": 0.123,
+          "year3": 0.246
+        },
+        "af-south-1": {
+          "year1_2": 0.133,
+          "year3": 0.266
+        },
+        "il-central-1": {
+          "year1_2": 0.118,
+          "year3": 0.235
+        }
+      },
+      "examples": [
+        {
+          "instanceClass": "db.r5.large",
+          "vCPUs": 2,
+          "monthlyHours": 730,
+          "tier": "Year 1-2",
+          "region": "us-east-1",
+          "monthlyCost": 146.0,
+          "calculation": "0.10 x 2 x 730 = $146.00/month"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/rds/mysql/pricing/",
+      "resourceInputs": [
+        {
+          "field": "vCPUs",
+          "source": "instanceClass",
+          "description": "Number of vCPUs for the DB instance class"
+        },
+        {
+          "field": "instances",
+          "source": "instanceCount",
+          "description": "Number of DB instances or clusters on this version"
+        }
+      ],
+      "instanceClassMapping": {
+        "db.t3.micro": {
+          "vCPUs": 2
+        },
+        "db.t3.small": {
+          "vCPUs": 2
+        },
+        "db.t3.medium": {
+          "vCPUs": 2
+        },
+        "db.t3.large": {
+          "vCPUs": 2
+        },
+        "db.t3.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t3.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.t4g.micro": {
+          "vCPUs": 2
+        },
+        "db.t4g.small": {
+          "vCPUs": 2
+        },
+        "db.t4g.medium": {
+          "vCPUs": 2
+        },
+        "db.t4g.large": {
+          "vCPUs": 2
+        },
+        "db.t4g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t4g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.large": {
+          "vCPUs": 2
+        },
+        "db.m5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6g.large": {
+          "vCPUs": 2
+        },
+        "db.m6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.large": {
+          "vCPUs": 2
+        },
+        "db.m6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.m7g.large": {
+          "vCPUs": 2
+        },
+        "db.m7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.large": {
+          "vCPUs": 2
+        },
+        "db.r5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6g.large": {
+          "vCPUs": 2
+        },
+        "db.r6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.large": {
+          "vCPUs": 2
+        },
+        "db.r6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.r7g.large": {
+          "vCPUs": 2
+        },
+        "db.r7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.x2g.large": {
+          "vCPUs": 2
+        },
+        "db.x2g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.x2g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.x2g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.x2g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.x2g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.x2g.16xlarge": {
+          "vCPUs": 64
+        }
+      }
+    },
+    {
+      "serviceCode": "rds",
+      "serviceName": "Amazon RDS",
+      "engine": "postgresql",
+      "pricingUnit": "vCPU-hour",
+      "formula": "tierRate x vCPUs x hours",
+      "tiers": [
+        {
+          "label": "Year 1-2",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            24
+          ],
+          "rateByRegion": true
+        },
+        {
+          "label": "Year 3",
+          "monthsFromEndOfStandardSupport": [
+            24,
+            36
+          ],
+          "rateByRegion": true,
+          "multiplier": 2.0
+        }
+      ],
+      "regionalRates": {
+        "us-east-1": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-east-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-central-1": {
+          "year1_2": 0.122,
+          "year3": 0.244
+        },
+        "ap-northeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-2": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "sa-east-1": {
+          "year1_2": 0.21,
+          "year3": 0.419
+        }
+      },
+      "notes": "Same rates as RDS MySQL. Full regional list available at source URL.",
+      "sourceUrl": "https://aws.amazon.com/rds/postgresql/pricing/",
+      "resourceInputs": [
+        {
+          "field": "vCPUs",
+          "source": "instanceClass",
+          "description": "Number of vCPUs for the DB instance class"
+        },
+        {
+          "field": "instances",
+          "source": "instanceCount",
+          "description": "Number of DB instances or clusters on this version"
+        }
+      ],
+      "instanceClassMapping": {
+        "db.t3.micro": {
+          "vCPUs": 2
+        },
+        "db.t3.small": {
+          "vCPUs": 2
+        },
+        "db.t3.medium": {
+          "vCPUs": 2
+        },
+        "db.t3.large": {
+          "vCPUs": 2
+        },
+        "db.t3.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t3.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.t4g.micro": {
+          "vCPUs": 2
+        },
+        "db.t4g.small": {
+          "vCPUs": 2
+        },
+        "db.t4g.medium": {
+          "vCPUs": 2
+        },
+        "db.t4g.large": {
+          "vCPUs": 2
+        },
+        "db.t4g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t4g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.large": {
+          "vCPUs": 2
+        },
+        "db.m5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6g.large": {
+          "vCPUs": 2
+        },
+        "db.m6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.large": {
+          "vCPUs": 2
+        },
+        "db.m6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.m7g.large": {
+          "vCPUs": 2
+        },
+        "db.m7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.large": {
+          "vCPUs": 2
+        },
+        "db.r5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6g.large": {
+          "vCPUs": 2
+        },
+        "db.r6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.large": {
+          "vCPUs": 2
+        },
+        "db.r6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.r7g.large": {
+          "vCPUs": 2
+        },
+        "db.r7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.x2g.large": {
+          "vCPUs": 2
+        },
+        "db.x2g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.x2g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.x2g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.x2g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.x2g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.x2g.16xlarge": {
+          "vCPUs": 64
+        }
+      }
+    },
+    {
+      "serviceCode": "aurora",
+      "serviceName": "Amazon Aurora",
+      "engine": "mysql",
+      "pricingUnit": "vCPU-hour",
+      "formula": "tierRate x vCPUs x hours",
+      "tiers": [
+        {
+          "label": "Year 1-2",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            24
+          ],
+          "rateByRegion": true
+        },
+        {
+          "label": "Year 3",
+          "monthsFromEndOfStandardSupport": [
+            24,
+            36
+          ],
+          "rateByRegion": true,
+          "multiplier": 2.0
+        }
+      ],
+      "regionalRates": {
+        "us-east-1": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-east-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-west-2": {
+          "year1_2": 0.118,
+          "year3": 0.236
+        },
+        "eu-west-3": {
+          "year1_2": 0.118,
+          "year3": 0.236
+        },
+        "eu-central-1": {
+          "year1_2": 0.122,
+          "year3": 0.244
+        },
+        "eu-central-2": {
+          "year1_2": 0.134,
+          "year3": 0.268
+        },
+        "eu-north-1": {
+          "year1_2": 0.103,
+          "year3": 0.206
+        },
+        "eu-south-1": {
+          "year1_2": 0.118,
+          "year3": 0.236
+        },
+        "eu-south-2": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "ap-northeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-northeast-2": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-northeast-3": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-2": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-3": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-4": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-south-1": {
+          "year1_2": 0.114,
+          "year3": 0.228
+        },
+        "ap-south-2": {
+          "year1_2": 0.114,
+          "year3": 0.228
+        },
+        "ap-east-1": {
+          "year1_2": 0.132,
+          "year3": 0.264
+        },
+        "ca-central-1": {
+          "year1_2": 0.108,
+          "year3": 0.216
+        },
+        "sa-east-1": {
+          "year1_2": 0.21,
+          "year3": 0.42
+        },
+        "me-south-1": {
+          "year1_2": 0.123,
+          "year3": 0.246
+        },
+        "me-central-1": {
+          "year1_2": 0.123,
+          "year3": 0.246
+        },
+        "af-south-1": {
+          "year1_2": 0.133,
+          "year3": 0.266
+        },
+        "il-central-1": {
+          "year1_2": 0.118,
+          "year3": 0.236
+        }
+      },
+      "sourceUrl": "https://aws.amazon.com/rds/aurora/pricing/",
+      "resourceInputs": [
+        {
+          "field": "vCPUs",
+          "source": "instanceClass",
+          "description": "Number of vCPUs for the DB instance class"
+        },
+        {
+          "field": "instances",
+          "source": "instanceCount",
+          "description": "Number of DB instances or clusters on this version"
+        }
+      ],
+      "instanceClassMapping": {
+        "db.t3.micro": {
+          "vCPUs": 2
+        },
+        "db.t3.small": {
+          "vCPUs": 2
+        },
+        "db.t3.medium": {
+          "vCPUs": 2
+        },
+        "db.t3.large": {
+          "vCPUs": 2
+        },
+        "db.t3.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t3.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.t4g.micro": {
+          "vCPUs": 2
+        },
+        "db.t4g.small": {
+          "vCPUs": 2
+        },
+        "db.t4g.medium": {
+          "vCPUs": 2
+        },
+        "db.t4g.large": {
+          "vCPUs": 2
+        },
+        "db.t4g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t4g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.large": {
+          "vCPUs": 2
+        },
+        "db.m5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6g.large": {
+          "vCPUs": 2
+        },
+        "db.m6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.large": {
+          "vCPUs": 2
+        },
+        "db.m6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.m7g.large": {
+          "vCPUs": 2
+        },
+        "db.m7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.large": {
+          "vCPUs": 2
+        },
+        "db.r5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6g.large": {
+          "vCPUs": 2
+        },
+        "db.r6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.large": {
+          "vCPUs": 2
+        },
+        "db.r6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.r7g.large": {
+          "vCPUs": 2
+        },
+        "db.r7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.x2g.large": {
+          "vCPUs": 2
+        },
+        "db.x2g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.x2g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.x2g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.x2g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.x2g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.x2g.16xlarge": {
+          "vCPUs": 64
+        }
+      }
+    },
+    {
+      "serviceCode": "aurora",
+      "serviceName": "Amazon Aurora",
+      "engine": "postgresql",
+      "pricingUnit": "vCPU-hour",
+      "formula": "tierRate x vCPUs x hours",
+      "tiers": [
+        {
+          "label": "Year 1-2",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            24
+          ],
+          "rateByRegion": true
+        },
+        {
+          "label": "Year 3",
+          "monthsFromEndOfStandardSupport": [
+            24,
+            36
+          ],
+          "rateByRegion": true,
+          "multiplier": 2.0
+        }
+      ],
+      "regionalRates": {
+        "us-east-1": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-east-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        }
+      },
+      "notes": "Same rates as Aurora MySQL. Full regional list available at source URL.",
+      "sourceUrl": "https://aws.amazon.com/rds/aurora/pricing/",
+      "resourceInputs": [
+        {
+          "field": "vCPUs",
+          "source": "instanceClass",
+          "description": "Number of vCPUs for the DB instance class"
+        },
+        {
+          "field": "instances",
+          "source": "instanceCount",
+          "description": "Number of DB instances or clusters on this version"
+        }
+      ],
+      "instanceClassMapping": {
+        "db.t3.micro": {
+          "vCPUs": 2
+        },
+        "db.t3.small": {
+          "vCPUs": 2
+        },
+        "db.t3.medium": {
+          "vCPUs": 2
+        },
+        "db.t3.large": {
+          "vCPUs": 2
+        },
+        "db.t3.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t3.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.t4g.micro": {
+          "vCPUs": 2
+        },
+        "db.t4g.small": {
+          "vCPUs": 2
+        },
+        "db.t4g.medium": {
+          "vCPUs": 2
+        },
+        "db.t4g.large": {
+          "vCPUs": 2
+        },
+        "db.t4g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t4g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.large": {
+          "vCPUs": 2
+        },
+        "db.m5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6g.large": {
+          "vCPUs": 2
+        },
+        "db.m6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.large": {
+          "vCPUs": 2
+        },
+        "db.m6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.m7g.large": {
+          "vCPUs": 2
+        },
+        "db.m7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.large": {
+          "vCPUs": 2
+        },
+        "db.r5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6g.large": {
+          "vCPUs": 2
+        },
+        "db.r6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.large": {
+          "vCPUs": 2
+        },
+        "db.r6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.r7g.large": {
+          "vCPUs": 2
+        },
+        "db.r7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.x2g.large": {
+          "vCPUs": 2
+        },
+        "db.x2g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.x2g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.x2g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.x2g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.x2g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.x2g.16xlarge": {
+          "vCPUs": 64
+        }
+      }
+    },
+    {
+      "serviceCode": "elasticache",
+      "serviceName": "Amazon ElastiCache",
+      "engine": "redis",
+      "pricingUnit": "node-hour",
+      "formula": "tierRate(nodeType) x nodes x hours",
+      "tiers": [
+        {
+          "label": "Year 1-2",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            24
+          ],
+          "multiplier": 0.8
+        },
+        {
+          "label": "Year 3",
+          "monthsFromEndOfStandardSupport": [
+            24,
+            36
+          ],
+          "multiplier": 1.6
+        }
+      ],
+      "notes": "ElastiCache Extended Support is charged as a percentage of the on-demand node price. Year 1-2 charges 80% of on-demand rate. Year 3 charges 160% of on-demand rate.",
+      "examples": [
+        {
+          "nodeType": "cache.r6g.large",
+          "onDemandRate": 0.166,
+          "tier": "Year 1-2",
+          "extSupportRate": 0.1328,
+          "nodes": 6,
+          "monthlyHours": 730,
+          "monthlyCost": 581.66,
+          "calculation": "0.166 x 0.8 x 6 x 730 = $581.66/month"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/elasticache/pricing/",
+      "resourceInputs": [
+        {
+          "field": "nodes",
+          "source": "nodeCount",
+          "description": "Number of cache nodes on this version"
+        },
+        {
+          "field": "onDemandRate",
+          "source": "nodeType",
+          "description": "On-demand hourly rate for the node type"
+        }
+      ]
+    },
+    {
+      "serviceCode": "opensearch",
+      "serviceName": "Amazon OpenSearch Service",
+      "engine": "opensearch",
+      "pricingUnit": "normalized-instance-hour (NIH)",
+      "formula": "nihRate x normalizationFactor x instanceHours",
+      "tiers": [
+        {
+          "label": "Extended Support",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            12
+          ],
+          "rateByRegion": true
+        }
+      ],
+      "normalizationFactors": {
+        "nano": 0.25,
+        "micro": 0.5,
+        "small": 1,
+        "medium": 2,
+        "large": 4,
+        "xlarge": 8,
+        "2xlarge": 16,
+        "4xlarge": 32,
+        "8xlarge": 64,
+        "9xlarge": 72,
+        "10xlarge": 80,
+        "12xlarge": 96,
+        "16xlarge": 128,
+        "18xlarge": 144,
+        "24xlarge": 192,
+        "32xlarge": 256
+      },
+      "regionalRates": {
+        "us-east-1": 0.0065,
+        "us-east-2": 0.0065,
+        "us-west-2": 0.0065,
+        "us-west-1": 0.0077,
+        "eu-west-1": 0.0072,
+        "eu-west-2": 0.0075,
+        "eu-west-3": 0.0075,
+        "eu-central-1": 0.0076,
+        "eu-central-2": 0.0083,
+        "eu-north-1": 0.0068,
+        "eu-south-1": 0.0076,
+        "eu-south-2": 0.0072,
+        "ap-northeast-1": 0.0081,
+        "ap-northeast-2": 0.0077,
+        "ap-northeast-3": 0.0081,
+        "ap-southeast-1": 0.0078,
+        "ap-southeast-2": 0.0082,
+        "ap-southeast-3": 0.0078,
+        "ap-southeast-4": 0.0082,
+        "ap-south-1": 0.007,
+        "ap-south-2": 0.007,
+        "ap-east-1": 0.0087,
+        "ca-central-1": 0.0072,
+        "ca-west-2": 0.0072,
+        "sa-east-1": 0.0103,
+        "me-south-1": 0.0079,
+        "me-central-1": 0.0079,
+        "me-west-1": 0.0076,
+        "af-south-1": 0.0086,
+        "il-central-1": 0.0076
+      },
+      "examples": [
+        {
+          "instanceType": "m7g.medium.search",
+          "instanceSize": "medium",
+          "normalizationFactor": 2,
+          "region": "us-east-1",
+          "nihRate": 0.0065,
+          "hours": 24,
+          "dailyCost": 0.312,
+          "calculation": "0.0065 x 2 x 24 = $0.312/day"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/opensearch-service/pricing/#Extended_support_costs",
+      "resourceInputs": [
+        {
+          "field": "instanceHours",
+          "source": "usageAmount",
+          "description": "Number of instance hours"
+        },
+        {
+          "field": "normalizationFactor",
+          "source": "instanceSize",
+          "description": "Size normalization factor from normalizationFactors table"
+        }
+      ]
+    },
+    {
+      "serviceCode": "opensearch",
+      "serviceName": "Amazon OpenSearch Service",
+      "engine": "elasticsearch",
+      "pricingUnit": "normalized-instance-hour (NIH)",
+      "formula": "nihRate x normalizationFactor x instanceHours",
+      "tiers": [
+        {
+          "label": "Extended Support",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            12
+          ],
+          "rateByRegion": true
+        }
+      ],
+      "normalizationFactors": {
+        "nano": 0.25,
+        "micro": 0.5,
+        "small": 1,
+        "medium": 2,
+        "large": 4,
+        "xlarge": 8,
+        "2xlarge": 16,
+        "4xlarge": 32,
+        "8xlarge": 64,
+        "9xlarge": 72,
+        "10xlarge": 80,
+        "12xlarge": 96,
+        "16xlarge": 128,
+        "18xlarge": 144,
+        "24xlarge": 192,
+        "32xlarge": 256
+      },
+      "regionalRates": {
+        "us-east-1": 0.0065,
+        "us-east-2": 0.0065,
+        "us-west-2": 0.0065,
+        "us-west-1": 0.0077,
+        "eu-west-1": 0.0072,
+        "eu-west-2": 0.0075,
+        "eu-west-3": 0.0075,
+        "eu-central-1": 0.0076,
+        "eu-central-2": 0.0083,
+        "eu-north-1": 0.0068,
+        "eu-south-1": 0.0076,
+        "eu-south-2": 0.0072,
+        "ap-northeast-1": 0.0081,
+        "ap-northeast-2": 0.0077,
+        "ap-northeast-3": 0.0081,
+        "ap-southeast-1": 0.0078,
+        "ap-southeast-2": 0.0082,
+        "ap-southeast-3": 0.0078,
+        "ap-southeast-4": 0.0082,
+        "ap-south-1": 0.007,
+        "ap-south-2": 0.007,
+        "ap-east-1": 0.0087,
+        "ca-central-1": 0.0072,
+        "ca-west-2": 0.0072,
+        "sa-east-1": 0.0103,
+        "me-south-1": 0.0079,
+        "me-central-1": 0.0079,
+        "me-west-1": 0.0076,
+        "af-south-1": 0.0086,
+        "il-central-1": 0.0076
+      },
+      "examples": [
+        {
+          "instanceType": "m7g.medium.search",
+          "instanceSize": "medium",
+          "normalizationFactor": 2,
+          "region": "us-east-1",
+          "nihRate": 0.0065,
+          "hours": 24,
+          "dailyCost": 0.312,
+          "calculation": "0.0065 x 2 x 24 = $0.312/day"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/opensearch-service/pricing/#Extended_support_costs",
+      "resourceInputs": [
+        {
+          "field": "instanceHours",
+          "source": "usageAmount",
+          "description": "Number of instance hours"
+        },
+        {
+          "field": "normalizationFactor",
+          "source": "instanceSize",
+          "description": "Size normalization factor from normalizationFactors table"
+        }
+      ],
+      "notes": "Elasticsearch (legacy) engine versions on Amazon OpenSearch Service use the same per-NIH Extended Support pricing as OpenSearch engine versions."
+    },
+    {
+      "serviceCode": "docdb",
+      "serviceName": "Amazon DocumentDB",
+      "engine": "docdb",
+      "pricingUnit": "vCPU-hour",
+      "formula": "tierRate x vCPUs x hours",
+      "tiers": [
+        {
+          "label": "Year 1-2",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            24
+          ],
+          "rateByRegion": true
+        },
+        {
+          "label": "Year 3",
+          "monthsFromEndOfStandardSupport": [
+            24,
+            36
+          ],
+          "rateByRegion": true,
+          "multiplier": 2.0
+        }
+      ],
+      "regionalRates": {
+        "us-east-1": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-east-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "us-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-west-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "eu-west-2": {
+          "year1_2": 0.1176,
+          "year3": 0.2352
+        },
+        "eu-central-1": {
+          "year1_2": 0.122,
+          "year3": 0.244
+        },
+        "ap-northeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-northeast-2": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-1": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-southeast-2": {
+          "year1_2": 0.12,
+          "year3": 0.24
+        },
+        "ap-south-1": {
+          "year1_2": 0.114,
+          "year3": 0.228
+        },
+        "ca-central-1": {
+          "year1_2": 0.108,
+          "year3": 0.216
+        },
+        "sa-east-1": {
+          "year1_2": 0.2096,
+          "year3": 0.4192
+        }
+      },
+      "resourceInputs": [
+        {
+          "field": "vCPUs",
+          "source": "instanceClass",
+          "description": "Number of vCPUs for the DB instance class"
+        },
+        {
+          "field": "instances",
+          "source": "instanceCount",
+          "description": "Number of DocumentDB instances on this version"
+        }
+      ],
+      "instanceClassMapping": {
+        "db.t3.micro": {
+          "vCPUs": 2
+        },
+        "db.t3.small": {
+          "vCPUs": 2
+        },
+        "db.t3.medium": {
+          "vCPUs": 2
+        },
+        "db.t3.large": {
+          "vCPUs": 2
+        },
+        "db.t3.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t3.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.t4g.micro": {
+          "vCPUs": 2
+        },
+        "db.t4g.small": {
+          "vCPUs": 2
+        },
+        "db.t4g.medium": {
+          "vCPUs": 2
+        },
+        "db.t4g.large": {
+          "vCPUs": 2
+        },
+        "db.t4g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.t4g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.large": {
+          "vCPUs": 2
+        },
+        "db.m5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6g.large": {
+          "vCPUs": 2
+        },
+        "db.m6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.large": {
+          "vCPUs": 2
+        },
+        "db.m6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.m6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.m6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.m7g.large": {
+          "vCPUs": 2
+        },
+        "db.m7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.m7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.m7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.m7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.m7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.m7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.large": {
+          "vCPUs": 2
+        },
+        "db.r5.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r5.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r5.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r5.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r5.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r5.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r5.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6g.large": {
+          "vCPUs": 2
+        },
+        "db.r6g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.large": {
+          "vCPUs": 2
+        },
+        "db.r6i.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r6i.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r6i.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r6i.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r6i.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r6i.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r6i.24xlarge": {
+          "vCPUs": 96
+        },
+        "db.r6i.32xlarge": {
+          "vCPUs": 128
+        },
+        "db.r7g.large": {
+          "vCPUs": 2
+        },
+        "db.r7g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r7g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r7g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r7g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r7g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.r7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.x2g.large": {
+          "vCPUs": 2
+        },
+        "db.x2g.xlarge": {
+          "vCPUs": 4
+        },
+        "db.x2g.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.x2g.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.x2g.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.x2g.12xlarge": {
+          "vCPUs": 48
+        },
+        "db.x2g.16xlarge": {
+          "vCPUs": 64
+        }
+      },
+      "notes": "Charges start July 1, 2026 for version 3.6 (grace period from March 31, 2026 ES start). Same vCPU-hour pricing model as RDS.",
+      "examples": [
+        {
+          "instanceClass": "db.r6g.xlarge",
+          "vCPUs": 4,
+          "monthlyHours": 730,
+          "tier": "Year 1-2",
+          "region": "us-east-1",
+          "monthlyCost": 292.0,
+          "calculation": "0.10 x 4 x 730 = $292.00/month"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/documentdb/pricing/"
+    }
+  ],
+  "versionsRef": "https://github.com/awslabs/aws-service-eol-data"
+}

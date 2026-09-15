@@ -1,0 +1,121 @@
+name: Validate Pricing Data
+
+on:
+  push:
+    paths:
+      - 'data/pricing.json'
+  pull_request:
+    paths:
+      - 'data/pricing.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install jsonschema
+
+      - name: Validate JSON syntax
+        run: python -c "import json; json.load(open('data/pricing.json'))"
+
+      - name: Validate against schema
+        run: |
+          python -c "
+          import json
+          from jsonschema import validate, ValidationError
+
+          with open('data/schema.json') as f:
+              schema = json.load(f)
+          with open('data/pricing.json') as f:
+              data = json.load(f)
+
+          try:
+              validate(instance=data, schema=schema)
+              print('Schema validation PASSED')
+          except ValidationError as e:
+              print(f'Schema validation FAILED: {e.message}')
+              print(f'Path: {list(e.path)}')
+              exit(1)
+          "
+
+      - name: Check pricing consistency
+        run: |
+          python -c "
+          import json
+
+          with open('data/pricing.json') as f:
+              data = json.load(f)
+
+          errors = []
+          for svc in data['services']:
+              vid = f\"{svc['serviceCode']}/{svc.get('engine', '')}\"
+
+              # Check: if tier has rateByRegion=true, regionalRates must exist
+              for tier in svc['tiers']:
+                  if tier.get('rateByRegion') and not svc.get('regionalRates'):
+                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has rateByRegion=true but no regionalRates object')
+
+              # Check: if tier has neither rate nor rateByRegion nor multiplier, flag it
+              for tier in svc['tiers']:
+                  if 'rate' not in tier and not tier.get('rateByRegion') and 'multiplier' not in tier:
+                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has no rate, rateByRegion, or multiplier')
+
+              # Check: tier time ranges should not overlap
+              sorted_tiers = sorted(svc['tiers'], key=lambda t: t['monthsFromEndOfStandardSupport'][0])
+              for i in range(len(sorted_tiers) - 1):
+                  current_end = sorted_tiers[i]['monthsFromEndOfStandardSupport'][1]
+                  next_start = sorted_tiers[i+1]['monthsFromEndOfStandardSupport'][0]
+                  if current_end > next_start:
+                      errors.append(f'{vid}: tier \"{sorted_tiers[i][\"label\"]}\" overlaps with \"{sorted_tiers[i+1][\"label\"]}\"')
+
+              # Check: sourceUrl is valid
+              if not svc.get('sourceUrl', '').startswith('https://'):
+                  errors.append(f'{vid}: missing or invalid sourceUrl')
+
+              # Check: resourceInputs not empty
+              if not svc.get('resourceInputs'):
+                  errors.append(f'{vid}: missing resourceInputs')
+
+              # Check: rates are positive
+              for tier in svc['tiers']:
+                  if 'rate' in tier and tier['rate'] < 0:
+                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has negative rate')
+                  if 'multiplier' in tier and tier['multiplier'] <= 0:
+                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has non-positive multiplier')
+
+          if errors:
+              print(f'Pricing consistency check FAILED with {len(errors)} error(s):')
+              for e in errors:
+                  print(f'  - {e}')
+              exit(1)
+          else:
+              print(f'Pricing consistency check PASSED ({len(data[\"services\"])} services validated)')
+          "
+
+      - name: Check freshness
+        run: |
+          python -c "
+          import json
+          from datetime import datetime
+
+          with open('data/pricing.json') as f:
+              data = json.load(f)
+
+          last_updated = datetime.strptime(data['lastUpdated'], '%Y-%m-%d')
+          age_days = (datetime.now() - last_updated).days
+
+          if age_days > 90:
+              print(f'FAILED: Dataset is {age_days} days old (last updated: {data[\"lastUpdated\"]}). Pricing data must be verified and lastUpdated refreshed.')
+              exit(1)
+          elif age_days > 60:
+              print(f'WARNING: Dataset is {age_days} days old (last updated: {data[\"lastUpdated\"]}). Verify rates against source URLs.')
+          else:
+              print(f'Freshness check PASSED (last updated: {data[\"lastUpdated\"]}, {age_days} days ago)')
+          "
