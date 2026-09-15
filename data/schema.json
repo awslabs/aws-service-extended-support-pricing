@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AWS Service Extended Support Pricing",
+  "description": "Schema for validating aws-service-extended-support-pricing entries",
+  "type": "object",
+  "required": ["schemaVersion", "lastUpdated", "services"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "_disclaimer": {
+      "type": "string"
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["serviceCode", "serviceName", "pricingUnit", "formula", "tiers", "sourceUrl", "resourceInputs"],
+        "properties": {
+          "serviceCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "serviceName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "engine": {
+            "type": ["string", "null"]
+          },
+          "pricingUnit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "formula": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["label", "monthsFromEndOfStandardSupport"],
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "monthsFromEndOfStandardSupport": {
+                  "type": "array",
+                  "items": { "type": "number" },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "rate": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "rateByRegion": {
+                  "type": "boolean"
+                },
+                "multiplier": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "regionalRates": {
+            "type": "object"
+          },
+          "normalizationFactors": {
+            "type": "object"
+          },
+          "instanceClassMapping": {
+            "type": "object"
+          },
+          "resourceInputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["field", "source", "description"],
+              "properties": {
+                "field": { "type": "string" },
+                "source": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            }
+          },
+          "notes": {
+            "type": "string"
+          },
+          "examples": {
+            "type": "array"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "pattern": "^https://aws\\.amazon\\.com/|^https://docs\\.aws\\.amazon\\.com/"
+          }
+        }
+      }
+    }
+  }
+}

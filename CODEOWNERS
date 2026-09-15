@@ -1,0 +1,14 @@
+# CODEOWNERS - Required reviewers for aws-service-extended-support-pricing
+# Changes to pricing data require review from at least one maintainer
+# to ensure accuracy and source URL verification.
+
+# All data files require maintainer review
+/data/ @ihartz
+
+# Schema and validation changes require maintainer review
+/data/schema.json @ihartz
+/.github/ @ihartz
+
+# README and documentation
+/README.md @ihartz
+/CONTRIBUTING.md @ihartz
