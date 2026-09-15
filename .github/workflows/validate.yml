@@ -8,6 +8,9 @@ on:
     paths:
       - 'data/pricing.json'
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
