@@ -1,5 +1,11 @@
 # AWS Service Extended Support Pricing
 
+![License](https://img.shields.io/github/license/awslabs/aws-service-extended-support-pricing)
+![Last commit](https://img.shields.io/github/last-commit/awslabs/aws-service-extended-support-pricing)
+![Latest release](https://img.shields.io/github/v/release/awslabs/aws-service-extended-support-pricing?sort=semver)
+[![Validate](https://github.com/awslabs/aws-service-extended-support-pricing/actions/workflows/validate.yml/badge.svg)](https://github.com/awslabs/aws-service-extended-support-pricing/actions/workflows/validate.yml)
+[![Discussions](https://img.shields.io/github/discussions/awslabs/aws-service-extended-support-pricing)](https://github.com/awslabs/aws-service-extended-support-pricing/discussions)
+
 > **NOT AN OFFICIAL AWS API.** This is a community-maintained dataset provided on a best-effort basis. It is not an official AWS product, service, or commitment. Always verify rates against the official AWS pricing pages linked in each entry's `sourceUrl` field before making financial decisions. This data does not account for negotiated discounts, EDPs, or private pricing agreements.
 
 A machine-readable dataset of AWS Extended Support pricing models, enabling programmatic cost calculation for resources past end of standard support.

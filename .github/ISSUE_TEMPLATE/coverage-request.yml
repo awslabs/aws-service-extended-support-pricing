@@ -1,0 +1,21 @@
+name: Coverage request
+description: Ask for a service, engine, region, or instance type to be added
+title: "[coverage]: "
+labels: ["coverage-request"]
+body:
+  - type: input
+    id: what
+    attributes:
+      label: What should we add
+      placeholder: "ElastiCache node type cache.r8g.large, or region ap-southeast-5"
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official AWS source URL (if known)
+      description: A pricing page with the value helps us add it faster
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Why / use case (optional)

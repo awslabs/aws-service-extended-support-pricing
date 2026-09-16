@@ -1,0 +1,38 @@
+name: Pricing correction
+description: Report a rate, tier, or region that looks wrong
+title: "[correction]: "
+labels: ["correction"]
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: Which entry
+      description: serviceCode / engine / region, plus instance family or node type if applicable
+      placeholder: "docdb / docdb / us-east-1 / r5"
+    validations:
+      required: true
+  - type: input
+    id: current
+    attributes:
+      label: Current value in the dataset
+      placeholder: "0.10 per vCPU-hour (year1_2)"
+    validations:
+      required: true
+  - type: input
+    id: correct
+    attributes:
+      label: Correct value
+      placeholder: "0.1108 per vCPU-hour (year1_2)"
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official AWS source URL
+      description: Link to the AWS pricing page that supports the correct value
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
