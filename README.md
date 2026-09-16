@@ -56,6 +56,7 @@ data/pricing.json
 | `tiers[].rateByRegion` | boolean | If true, use `regionalRates` for per-region pricing |
 | `tiers[].multiplier` | number | Multiplier applied to base rate for this tier |
 | `regionalRates` | object | Per-region rates (when pricing varies by region) |
+| `instanceRates` | object | Per-instance rates nested as `region -> instanceKey -> {year1_2, year3}`. Used where the rate varies by instance: DocumentDB is keyed by instance family (e.g. `r5`, `t3`), ElastiCache by node type (e.g. `cache.r6g.large`). |
 | `normalizationFactors` | object | Instance size to normalization factor mapping (OpenSearch) |
 | `resourceInputs` | array | What inputs are needed to calculate cost for this service |
 | `resourceInputs[].field` | string | The variable name used in the formula |
@@ -73,9 +74,12 @@ data/pricing.json
 | Amazon EKS | cluster-hour | Single tier: $0.60 | No |
 | Amazon RDS (MySQL/PostgreSQL) | vCPU-hour | Year 1-2, Year 3 (2x) | Yes |
 | Amazon Aurora (MySQL/PostgreSQL) | vCPU-hour | Year 1-2, Year 3 (2x) | Yes |
-| Amazon ElastiCache | node-hour | Year 1-2 (80% OD), Year 3 (160% OD) | Based on node type OD price |
+| Amazon ElastiCache (Redis) | node-hour | Year 1-2, Year 3 (2x) | Yes (per node type) |
 | Amazon OpenSearch Service | NIH | Single tier | Yes |
-| Amazon DocumentDB | vCPU-hour | Year 1-2, Year 3 (2x) | Yes |
+| Amazon DocumentDB | vCPU-hour | Year 1-2, Year 3 (2x) | Yes (per instance family) |
+| Amazon Aurora Serverless v2 | ACU-hour | Year 1-2, Year 3 (2x) | Yes |
+
+**Note on what each rate represents:** the EKS rate is the *total* cluster-hour cost during Extended Support (base control plane plus the Extended Support adder). Every other service lists the Extended Support *surcharge* only, applied on top of normal instance or capacity cost. RDS, Aurora, and Aurora Serverless v2 are per vCPU-hour (per ACU-hour for Serverless v2) and vary by region. DocumentDB is per vCPU-hour and varies by region and instance family (e.g. `r5` differs from `t3`) - see `instanceRates`. ElastiCache (Redis) is per node-hour and varies by region and node type - see `instanceRates`.
 
 ## Usage Examples
 
@@ -124,6 +128,22 @@ annual_y3 = rate_y3 * vcpus * instances * 8760
 print(f"Year 1-2: ${annual_y12:,.2f}/year")
 print(f"Year 3:   ${annual_y3:,.2f}/year (doubles)")
 ```
+
+### Calculate ElastiCache Extended Support cost by node type
+
+```python
+ec = next(s for s in data['services'] if s['serviceCode'] == 'elasticache')
+region = 'us-east-1'
+node_type = 'cache.r6g.2xlarge'
+nodes = 6
+hours_per_month = 730
+
+rate = ec['instanceRates'][region][node_type]['year1_2']
+monthly_cost = rate * nodes * hours_per_month
+print(f"ElastiCache ES (Year 1-2, {region}, {node_type}): ${monthly_cost:,.2f}/month")
+```
+
+DocumentDB uses the same `instanceRates` shape, keyed by instance family instead of node type - for example `data[...]['instanceRates']['us-east-1']['r5']['year1_2']`, multiplied by vCPUs and instances.
 
 ## Relationship to aws-service-eol-data
 

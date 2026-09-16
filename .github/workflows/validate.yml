@@ -60,10 +60,10 @@ jobs:
           for svc in data['services']:
               vid = f\"{svc['serviceCode']}/{svc.get('engine', '')}\"
 
-              # Check: if tier has rateByRegion=true, regionalRates must exist
+              # Check: if tier has rateByRegion=true, regionalRates or instanceRates must exist
               for tier in svc['tiers']:
-                  if tier.get('rateByRegion') and not svc.get('regionalRates'):
-                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has rateByRegion=true but no regionalRates object')
+                  if tier.get('rateByRegion') and not (svc.get('regionalRates') or svc.get('instanceRates')):
+                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has rateByRegion=true but no regionalRates or instanceRates object')
 
               # Check: if tier has neither rate nor rateByRegion nor multiplier, flag it
               for tier in svc['tiers']:

@@ -3,7 +3,11 @@
   "title": "AWS Service Extended Support Pricing",
   "description": "Schema for validating aws-service-extended-support-pricing entries",
   "type": "object",
-  "required": ["schemaVersion", "lastUpdated", "services"],
+  "required": [
+    "schemaVersion",
+    "lastUpdated",
+    "services"
+  ],
   "properties": {
     "schemaVersion": {
       "type": "string",
@@ -20,7 +24,15 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["serviceCode", "serviceName", "pricingUnit", "formula", "tiers", "sourceUrl", "resourceInputs"],
+        "required": [
+          "serviceCode",
+          "serviceName",
+          "pricingUnit",
+          "formula",
+          "tiers",
+          "sourceUrl",
+          "resourceInputs"
+        ],
         "properties": {
           "serviceCode": {
             "type": "string",
@@ -31,7 +43,10 @@
             "minLength": 1
           },
           "engine": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "pricingUnit": {
             "type": "string",
@@ -46,7 +61,10 @@
             "minItems": 1,
             "items": {
               "type": "object",
-              "required": ["label", "monthsFromEndOfStandardSupport"],
+              "required": [
+                "label",
+                "monthsFromEndOfStandardSupport"
+              ],
               "properties": {
                 "label": {
                   "type": "string",
@@ -54,7 +72,9 @@
                 },
                 "monthsFromEndOfStandardSupport": {
                   "type": "array",
-                  "items": { "type": "number" },
+                  "items": {
+                    "type": "number"
+                  },
                   "minItems": 2,
                   "maxItems": 2
                 },
@@ -85,11 +105,21 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["field", "source", "description"],
+              "required": [
+                "field",
+                "source",
+                "description"
+              ],
               "properties": {
-                "field": { "type": "string" },
-                "source": { "type": "string" },
-                "description": { "type": "string" }
+                "field": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -102,6 +132,9 @@
           "sourceUrl": {
             "type": "string",
             "pattern": "^https://aws\\.amazon\\.com/|^https://docs\\.aws\\.amazon\\.com/"
+          },
+          "instanceRates": {
+            "type": "object"
           }
         }
       }
