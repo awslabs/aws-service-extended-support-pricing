@@ -21,7 +21,7 @@ This repository provides consolidated, structured pricing data that enables auto
 - **Forecast Extended Support exposure** before the charges land - project the monthly or annual surcharge for resources heading past end of standard support, per account or per team.
 - **Build the upgrade business case** - quantify the cost of not upgrading (the Extended Support surcharge) against the effort to upgrade, and prioritize the fleet by dollar impact.
 - **Budgeting, chargeback, and showback** - attribute projected Extended Support cost to owners using the per-vCPU, per-node, or per-ACU model.
-- **Dashboards and FinOps tooling** - feed the pricing model into CID, QuickSight, Grafana, or an internal cost tool so every consumer shares one figured-out calculation instead of re-deriving it.
+- **Dashboards and FinOps tooling** - feed the pricing model into any dashboard or FinOps tool (such as QuickSight, Grafana, Tableau, or your own internal tooling) so every consumer shares one figured-out calculation instead of re-deriving it.
 - **Agents and chatbots** - give an LLM or agent a structured source to answer "what will Extended Support cost for X?" with a `sourceUrl` to cite.
 - **Enrich CI/CD, change management, and ITSM workflows with cost** - when an end-of-support-driven pipeline gate, change record, or ServiceNow/Jira ticket fires (often off the companion lifecycle dataset), attach the projected Extended Support surcharge so the decision carries a dollar figure, not just a date.
 - **Pair with [aws-service-eol-data](https://github.com/awslabs/aws-service-eol-data)** to answer "when does my version lose support, and what will it cost if I don't upgrade?" in one join.
