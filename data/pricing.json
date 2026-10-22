@@ -1,16 +1,21 @@
 {
-  "schemaVersion": "1.0",
-  "lastUpdated": "2026-09-16",
-  "_disclaimer": "This is community-maintained data, NOT an official AWS API. Verify rates against sourceUrl before making financial decisions. Does not account for EDPs, private pricing, or credits. For production use, pin to a tagged release rather than tracking main branch.",
+  "schemaVersion": "2.0",
+  "lastUpdated": "2026-10-19",
+  "_disclaimer": "Community republication of AWS pricing data, NOT an official AWS API. Public list prices only: does not account for EDPs, private pricing, or credits. For production use, pin to a tagged release rather than tracking the main branch.",
+  "versionsRef": "https://github.com/awslabs/aws-service-eol-data",
+  "joinKey": "Match an aws-service-eol-data entry on (serviceCode, engine), then on versionNumber when match.versionNumbers is present, then on capacityMode for Aurora. engine is copied exactly from aws-service-eol-data, so null means the service has no engine.",
   "services": [
     {
-      "serviceCode": "eks",
+      "match": {
+        "serviceCode": "eks",
+        "engine": null
+      },
       "serviceName": "Amazon EKS",
-      "engine": null,
       "pricingUnit": "cluster-hour",
       "formula": "rate x clusters x hours",
       "tiers": [
         {
+          "id": "extended",
           "label": "Extended Support",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -30,13 +35,16 @@
       ]
     },
     {
-      "serviceCode": "rds",
+      "match": {
+        "serviceCode": "rds",
+        "engine": "mysql"
+      },
       "serviceName": "Amazon RDS",
-      "engine": "mysql",
       "pricingUnit": "vCPU-hour",
       "formula": "tierRate x vCPUs x hours",
       "tiers": [
         {
+          "id": "year1_2",
           "label": "Year 1-2",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -45,6 +53,7 @@
           "rateByRegion": true
         },
         {
+          "id": "year3",
           "label": "Year 3",
           "monthsFromEndOfStandardSupport": [
             24,
@@ -472,16 +481,33 @@
         "db.x2g.16xlarge": {
           "vCPUs": 64
         }
+      },
+      "tierStartDates": {
+        "8.4": {
+          "year1_2": "2029-08-01",
+          "year3": "2031-08-01"
+        },
+        "8.0": {
+          "year1_2": "2026-08-01",
+          "year3": "2028-08-01"
+        },
+        "5.7": {
+          "year1_2": "2024-03-01",
+          "year3": "2026-03-01"
+        }
       }
     },
     {
-      "serviceCode": "rds",
+      "match": {
+        "serviceCode": "rds",
+        "engine": "postgresql"
+      },
       "serviceName": "Amazon RDS",
-      "engine": "postgresql",
       "pricingUnit": "vCPU-hour",
       "formula": "tierRate x vCPUs x hours",
       "tiers": [
         {
+          "id": "year1_2",
           "label": "Year 1-2",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -490,6 +516,7 @@
           "rateByRegion": true
         },
         {
+          "id": "year3",
           "label": "Year 3",
           "monthsFromEndOfStandardSupport": [
             24,
@@ -907,16 +934,54 @@
         "db.x2g.16xlarge": {
           "vCPUs": 64
         }
+      },
+      "tierStartDates": {
+        "18": {
+          "year1_2": "2031-03-01",
+          "year3": "2033-03-01"
+        },
+        "17": {
+          "year1_2": "2030-03-01",
+          "year3": "2032-03-01"
+        },
+        "16": {
+          "year1_2": "2029-03-01",
+          "year3": "2031-03-01"
+        },
+        "15": {
+          "year1_2": "2028-03-01",
+          "year3": "2030-03-01"
+        },
+        "14": {
+          "year1_2": "2027-03-01",
+          "year3": "2029-03-01"
+        },
+        "13": {
+          "year1_2": "2026-03-01",
+          "year3": "2028-03-01"
+        },
+        "12": {
+          "year1_2": "2025-03-01",
+          "year3": "2027-03-01"
+        },
+        "11": {
+          "year1_2": "2024-04-01",
+          "year3": "2026-04-01"
+        }
       }
     },
     {
-      "serviceCode": "aurora",
+      "match": {
+        "serviceCode": "rds-aurora",
+        "engine": "mysql",
+        "capacityMode": "provisioned"
+      },
       "serviceName": "Amazon Aurora",
-      "engine": "mysql",
       "pricingUnit": "vCPU-hour",
       "formula": "tierRate x vCPUs x hours",
       "tiers": [
         {
+          "id": "year1_2",
           "label": "Year 1-2",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -925,6 +990,7 @@
           "rateByRegion": true
         },
         {
+          "id": "year3",
           "label": "Year 3",
           "monthsFromEndOfStandardSupport": [
             24,
@@ -936,116 +1002,88 @@
       ],
       "regionalRates": {
         "us-east-1": {
-          "year1_2": 0.1,
-          "year3": 0.2
+          "year1_2": 0.1
         },
         "us-east-2": {
-          "year1_2": 0.1,
-          "year3": 0.2
+          "year1_2": 0.1
         },
         "us-west-2": {
-          "year1_2": 0.1,
-          "year3": 0.2
+          "year1_2": 0.1
         },
         "us-west-1": {
-          "year1_2": 0.112,
-          "year3": 0.224
+          "year1_2": 0.112
         },
         "eu-west-1": {
-          "year1_2": 0.112,
-          "year3": 0.224
+          "year1_2": 0.112
         },
         "eu-west-2": {
-          "year1_2": 0.118,
-          "year3": 0.236
+          "year1_2": 0.118
         },
         "eu-west-3": {
-          "year1_2": 0.118,
-          "year3": 0.236
+          "year1_2": 0.118
         },
         "eu-central-1": {
-          "year1_2": 0.122,
-          "year3": 0.244
+          "year1_2": 0.122
         },
         "eu-central-2": {
-          "year1_2": 0.134,
-          "year3": 0.268
+          "year1_2": 0.134
         },
         "eu-north-1": {
-          "year1_2": 0.103,
-          "year3": 0.206
+          "year1_2": 0.103
         },
         "eu-south-1": {
-          "year1_2": 0.118,
-          "year3": 0.236
+          "year1_2": 0.118
         },
         "eu-south-2": {
-          "year1_2": 0.112,
-          "year3": 0.224
+          "year1_2": 0.112
         },
         "ap-northeast-1": {
-          "year1_2": 0.12,
-          "year3": 0.24
+          "year1_2": 0.12
         },
         "ap-northeast-2": {
-          "year1_2": 0.12,
-          "year3": 0.24
+          "year1_2": 0.12
         },
         "ap-northeast-3": {
-          "year1_2": 0.12,
-          "year3": 0.24
+          "year1_2": 0.12
         },
         "ap-southeast-1": {
-          "year1_2": 0.12,
-          "year3": 0.24
+          "year1_2": 0.12
         },
         "ap-southeast-2": {
-          "year1_2": 0.12,
-          "year3": 0.24
+          "year1_2": 0.12
         },
         "ap-southeast-3": {
-          "year1_2": 0.12,
-          "year3": 0.24
+          "year1_2": 0.12
         },
         "ap-southeast-4": {
-          "year1_2": 0.12,
-          "year3": 0.24
+          "year1_2": 0.12
         },
         "ap-south-1": {
-          "year1_2": 0.114,
-          "year3": 0.228
+          "year1_2": 0.114
         },
         "ap-south-2": {
-          "year1_2": 0.114,
-          "year3": 0.228
+          "year1_2": 0.114
         },
         "ap-east-1": {
-          "year1_2": 0.132,
-          "year3": 0.264
+          "year1_2": 0.132
         },
         "ca-central-1": {
-          "year1_2": 0.108,
-          "year3": 0.216
+          "year1_2": 0.108
         },
         "sa-east-1": {
-          "year1_2": 0.21,
-          "year3": 0.42
+          "year1_2": 0.21
         },
         "me-south-1": {
-          "year1_2": 0.123,
-          "year3": 0.246
+          "year1_2": 0.123
         },
         "me-central-1": {
-          "year1_2": 0.123,
-          "year3": 0.246
+          "year1_2": 0.123
         },
         "af-south-1": {
-          "year1_2": 0.133,
-          "year3": 0.266
+          "year1_2": 0.133
         },
         "il-central-1": {
-          "year1_2": 0.118,
-          "year3": 0.236
+          "year1_2": 0.118
         },
         "ap-east-2": {
           "year1_2": 0.108
@@ -1333,16 +1371,31 @@
         "db.x2g.16xlarge": {
           "vCPUs": 64
         }
-      }
+      },
+      "tierStartDates": {
+        "8.0": {
+          "year1_2": "2028-05-01",
+          "year3": null
+        },
+        "5.7": {
+          "year1_2": "2024-12-01",
+          "year3": "2026-12-01"
+        }
+      },
+      "notes": "Year 3: the AWS Price List API publishes Aurora MySQL Year 3 rates only for mx-central-1 so far (as of 2026-10-20). For other regions, estimate Year 3 as the tier multiplier (2.0) x the Year 1-2 rate; AWS rounds published Year 3 rates, so the actual rate can differ by $0.001. The monthly freshness check adds each region's Year 3 rate when AWS publishes it. Only Aurora MySQL 5.7 has a Year 3 tier (it starts 2026-12-01); Aurora MySQL 8.0 has none."
     },
     {
-      "serviceCode": "aurora",
+      "match": {
+        "serviceCode": "rds-aurora",
+        "engine": "postgresql",
+        "capacityMode": "provisioned"
+      },
       "serviceName": "Amazon Aurora",
-      "engine": "postgresql",
       "pricingUnit": "vCPU-hour",
       "formula": "tierRate x vCPUs x hours",
       "tiers": [
         {
+          "id": "year1_2",
           "label": "Year 1-2",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -1351,6 +1404,7 @@
           "rateByRegion": true
         },
         {
+          "id": "year3",
           "label": "Year 3",
           "monthsFromEndOfStandardSupport": [
             24,
@@ -1768,15 +1822,54 @@
         "db.x2g.16xlarge": {
           "vCPUs": 64
         }
+      },
+      "tierStartDates": {
+        "18": {
+          "year1_2": "2031-03-01",
+          "year3": "2033-03-01"
+        },
+        "17": {
+          "year1_2": "2030-03-01",
+          "year3": "2032-03-01"
+        },
+        "16": {
+          "year1_2": "2029-03-01",
+          "year3": "2031-03-01"
+        },
+        "15": {
+          "year1_2": "2028-03-01",
+          "year3": "2030-03-01"
+        },
+        "14": {
+          "year1_2": "2027-03-01",
+          "year3": "2029-03-01"
+        },
+        "13": {
+          "year1_2": "2026-03-01",
+          "year3": "2028-03-01"
+        },
+        "12": {
+          "year1_2": "2025-03-01",
+          "year3": "2027-03-01"
+        },
+        "11": {
+          "year1_2": "2024-04-01",
+          "year3": "2026-04-01"
+        }
       }
     },
     {
-      "serviceCode": "aurora-serverless-v2",
+      "match": {
+        "serviceCode": "rds-aurora",
+        "engine": "mysql",
+        "capacityMode": "serverless-v2"
+      },
       "serviceName": "Amazon Aurora Serverless v2",
       "pricingUnit": "ACU-hour",
       "formula": "tierRate x ACUs x hours",
       "tiers": [
         {
+          "id": "year1_2",
           "label": "Year 1-2",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -1785,6 +1878,7 @@
           "rateByRegion": true
         },
         {
+          "id": "year3",
           "label": "Year 3",
           "monthsFromEndOfStandardSupport": [
             24,
@@ -1944,16 +2038,30 @@
           "description": "Aurora Serverless v2 capacity in ACUs"
         }
       ],
-      "sourceUrl": "https://aws.amazon.com/rds/aurora/pricing/"
+      "sourceUrl": "https://aws.amazon.com/rds/aurora/pricing/",
+      "tierStartDates": {
+        "8.0": {
+          "year1_2": "2028-05-01",
+          "year3": null
+        },
+        "5.7": {
+          "year1_2": "2024-12-01",
+          "year3": "2026-12-01"
+        }
+      }
     },
     {
-      "serviceCode": "elasticache",
-      "serviceName": "Amazon ElastiCache",
-      "engine": "redis",
-      "pricingUnit": "node-hour",
-      "formula": "nodeRate x nodes x hours (Extended Support surcharge per node-hour, varies by node type)",
+      "match": {
+        "serviceCode": "rds-aurora",
+        "engine": "postgresql",
+        "capacityMode": "serverless-v2"
+      },
+      "serviceName": "Amazon Aurora Serverless v2",
+      "pricingUnit": "ACU-hour",
+      "formula": "tierRate x ACUs x hours",
       "tiers": [
         {
+          "id": "year1_2",
           "label": "Year 1-2",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -1962,6 +2070,7 @@
           "rateByRegion": true
         },
         {
+          "id": "year3",
           "label": "Year 3",
           "monthsFromEndOfStandardSupport": [
             24,
@@ -1971,7 +2080,222 @@
           "multiplier": 2.0
         }
       ],
-      "notes": "Extended Support surcharge per node-hour, varies by node type; see instanceRates[region][nodeType][tier]. Redis engine.",
+      "regionalRates": {
+        "us-east-1": {
+          "year1_2": 0.085,
+          "year3": 0.17
+        },
+        "af-south-1": {
+          "year1_2": 0.113,
+          "year3": 0.226
+        },
+        "ap-east-1": {
+          "year1_2": 0.112,
+          "year3": 0.224
+        },
+        "ap-east-2": {
+          "year1_2": 0.092
+        },
+        "ap-northeast-1": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "ap-northeast-2": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "ap-northeast-3": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "ap-south-1": {
+          "year1_2": 0.097,
+          "year3": 0.194
+        },
+        "ap-south-2": {
+          "year1_2": 0.097,
+          "year3": 0.194
+        },
+        "ap-southeast-1": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "ap-southeast-2": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "ap-southeast-3": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "ap-southeast-4": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "ap-southeast-5": {
+          "year1_2": 0.092
+        },
+        "ap-southeast-6": {
+          "year1_2": 0.107
+        },
+        "ca-central-1": {
+          "year1_2": 0.092,
+          "year3": 0.184
+        },
+        "ca-west-1": {
+          "year1_2": 0.092,
+          "year3": 0.184
+        },
+        "eu-central-1": {
+          "year1_2": 0.104,
+          "year3": 0.207
+        },
+        "eu-central-2": {
+          "year1_2": 0.114,
+          "year3": 0.228
+        },
+        "eu-north-1": {
+          "year1_2": 0.087,
+          "year3": 0.175
+        },
+        "eu-south-1": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "eu-south-2": {
+          "year1_2": 0.095,
+          "year3": 0.19
+        },
+        "eu-west-1": {
+          "year1_2": 0.095,
+          "year3": 0.19
+        },
+        "eu-west-2": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "eu-west-3": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "il-central-1": {
+          "year1_2": 0.1,
+          "year3": 0.2
+        },
+        "me-central-1": {
+          "year1_2": 0.105,
+          "year3": 0.209
+        },
+        "me-south-1": {
+          "year1_2": 0.105,
+          "year3": 0.209
+        },
+        "mx-central-1": {
+          "year1_2": 0.089,
+          "year3": 0.179
+        },
+        "sa-east-1": {
+          "year1_2": 0.178,
+          "year3": 0.356
+        },
+        "us-east-2": {
+          "year1_2": 0.085,
+          "year3": 0.17
+        },
+        "us-gov-east-1": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "us-gov-west-1": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        },
+        "us-west-1": {
+          "year1_2": 0.095,
+          "year3": 0.19
+        },
+        "us-west-2": {
+          "year1_2": 0.085,
+          "year3": 0.17
+        },
+        "us-west-2-lax-1": {
+          "year1_2": 0.102,
+          "year3": 0.204
+        }
+      },
+      "resourceInputs": [
+        {
+          "field": "acus",
+          "source": "acuCount",
+          "description": "Aurora Serverless v2 capacity in ACUs"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/rds/aurora/pricing/",
+      "tierStartDates": {
+        "18": {
+          "year1_2": "2031-03-01",
+          "year3": "2033-03-01"
+        },
+        "17": {
+          "year1_2": "2030-03-01",
+          "year3": "2032-03-01"
+        },
+        "16": {
+          "year1_2": "2029-03-01",
+          "year3": "2031-03-01"
+        },
+        "15": {
+          "year1_2": "2028-03-01",
+          "year3": "2030-03-01"
+        },
+        "14": {
+          "year1_2": "2027-03-01",
+          "year3": "2029-03-01"
+        },
+        "13": {
+          "year1_2": "2026-03-01",
+          "year3": "2028-03-01"
+        },
+        "12": {
+          "year1_2": "2025-03-01",
+          "year3": "2027-03-01"
+        },
+        "11": {
+          "year1_2": "2024-04-01",
+          "year3": "2026-04-01"
+        }
+      }
+    },
+    {
+      "match": {
+        "serviceCode": "elasticache",
+        "engine": "redis"
+      },
+      "serviceName": "Amazon ElastiCache",
+      "pricingUnit": "node-hour",
+      "formula": "nodeRate x nodes x hours (Extended Support surcharge per node-hour, varies by node type)",
+      "tiers": [
+        {
+          "id": "year1_2",
+          "label": "Year 1-2",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            24
+          ],
+          "rateByRegion": true
+        },
+        {
+          "id": "year3",
+          "label": "Year 3",
+          "monthsFromEndOfStandardSupport": [
+            24,
+            36
+          ],
+          "rateByRegion": true,
+          "multiplier": 2.0
+        }
+      ],
+      "notes": "Extended Support surcharge per node-hour, varies by node type; see instanceRates[region][nodeType][tier]. Engine scope: ElastiCache Extended Support applies to Redis OSS only (v4, v5, v6 in the ElastiCache docs; the Health Version Catalog also lists Redis OSS 7). No Valkey or Memcached Extended Support rates are published as of 2026-10-20; the monthly freshness check flags any that appear.",
       "examples": [
         {
           "nodeType": "cache.r6g.large",
@@ -9493,20 +9817,45 @@
             "year3": 0.051
           }
         }
+      },
+      "tierStartDates": {
+        "4": {
+          "year1_2": "2026-02-01",
+          "year3": "2028-02-01"
+        },
+        "5": {
+          "year1_2": "2026-02-01",
+          "year3": "2028-02-01"
+        },
+        "6": {
+          "year1_2": "2027-02-01",
+          "year3": "2029-02-01"
+        }
       }
     },
     {
-      "serviceCode": "opensearch",
+      "match": {
+        "serviceCode": "opensearch",
+        "engine": "opensearch",
+        "versionNumbers": [
+          "1.3",
+          "2.11",
+          "2.13",
+          "2.15",
+          "2.17",
+          "2.19"
+        ]
+      },
       "serviceName": "Amazon OpenSearch Service",
-      "engine": "opensearch",
       "pricingUnit": "normalized-instance-hour (NIH)",
       "formula": "nihRate x normalizationFactor x instanceHours",
       "tiers": [
         {
+          "id": "extended",
           "label": "Extended Support",
           "monthsFromEndOfStandardSupport": [
             0,
-            12
+            36
           ],
           "rateByRegion": true
         }
@@ -9553,11 +9902,9 @@
         "ap-south-2": 0.007,
         "ap-east-1": 0.0087,
         "ca-central-1": 0.0072,
-        "ca-west-2": 0.0072,
         "sa-east-1": 0.0103,
         "me-south-1": 0.0079,
         "me-central-1": 0.0079,
-        "me-west-1": 0.0076,
         "af-south-1": 0.0086,
         "il-central-1": 0.0076,
         "ap-east-2": 0.0077,
@@ -9593,20 +9940,185 @@
           "source": "instanceSize",
           "description": "Size normalization factor from normalizationFactors table"
         }
-      ]
+      ],
+      "notes": "Standard Extended Support rate ($0.0065 per NIH in us-east-1). Per AWS, the last version of each major family gets 3 years of Extended Support and other minors get 1 year; Elasticsearch 5.6 continues at this rate until Nov 7, 2028. The Extended Support end date comes from aws-service-eol-data."
     },
     {
-      "serviceCode": "opensearch",
+      "match": {
+        "serviceCode": "opensearch",
+        "engine": "opensearch",
+        "versionNumbers": [
+          "1.0",
+          "1.1",
+          "1.2",
+          "2.3",
+          "2.5",
+          "2.7",
+          "2.9"
+        ]
+      },
       "serviceName": "Amazon OpenSearch Service",
-      "engine": "elasticsearch",
+      "pricingUnit": "normalized-instance-hour (NIH)",
+      "formula": "until Nov 7, 2026: nihRate x normalizationFactor x instanceHours; from Nov 7, 2026: onDemandInstanceRate x instancePriceMultiplier x instanceHours",
+      "tiers": [
+        {
+          "id": "extended",
+          "label": "Extended Support (until Nov 7, 2026)",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            12
+          ],
+          "rateByRegion": true
+        },
+        {
+          "id": "extended_instance",
+          "label": "Extended Support extension (from Nov 7, 2026)",
+          "monthsFromEndOfStandardSupport": [
+            12,
+            24
+          ],
+          "instancePriceMultiplier": 1.0
+        }
+      ],
+      "normalizationFactors": {
+        "nano": 0.25,
+        "micro": 0.5,
+        "small": 1,
+        "medium": 2,
+        "large": 4,
+        "xlarge": 8,
+        "2xlarge": 16,
+        "4xlarge": 32,
+        "8xlarge": 64,
+        "9xlarge": 72,
+        "10xlarge": 80,
+        "12xlarge": 96,
+        "16xlarge": 128,
+        "18xlarge": 144,
+        "24xlarge": 192,
+        "32xlarge": 256
+      },
+      "regionalRates": {
+        "us-east-1": 0.0065,
+        "us-east-2": 0.0065,
+        "us-west-2": 0.0065,
+        "us-west-1": 0.0077,
+        "eu-west-1": 0.0072,
+        "eu-west-2": 0.0075,
+        "eu-west-3": 0.0075,
+        "eu-central-1": 0.0076,
+        "eu-central-2": 0.0083,
+        "eu-north-1": 0.0068,
+        "eu-south-1": 0.0076,
+        "eu-south-2": 0.0072,
+        "ap-northeast-1": 0.0081,
+        "ap-northeast-2": 0.0077,
+        "ap-northeast-3": 0.0081,
+        "ap-southeast-1": 0.0078,
+        "ap-southeast-2": 0.0082,
+        "ap-southeast-3": 0.0078,
+        "ap-southeast-4": 0.0082,
+        "ap-south-1": 0.007,
+        "ap-south-2": 0.007,
+        "ap-east-1": 0.0087,
+        "ca-central-1": 0.0072,
+        "sa-east-1": 0.0103,
+        "me-south-1": 0.0079,
+        "me-central-1": 0.0079,
+        "af-south-1": 0.0086,
+        "il-central-1": 0.0076,
+        "ap-east-2": 0.0077,
+        "ap-southeast-5": 0.0074,
+        "ap-southeast-6": 0.0087,
+        "ap-southeast-7": 0.0075,
+        "ca-west-1": 0.0072,
+        "mx-central-1": 0.0069,
+        "us-gov-east-1": 0.0078,
+        "us-gov-west-1": 0.0078
+      },
+      "examples": [
+        {
+          "instanceType": "m7g.medium.search",
+          "instanceSize": "medium",
+          "normalizationFactor": 2,
+          "region": "us-east-1",
+          "nihRate": 0.0065,
+          "hours": 24,
+          "dailyCost": 0.312,
+          "calculation": "0.0065 x 2 x 24 = $0.312/day"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/blogs/big-data/amazon-opensearch-service-extends-version-lifecycle-support-timelines/",
+      "resourceInputs": [
+        {
+          "field": "instanceHours",
+          "source": "usageAmount",
+          "description": "Number of instance hours"
+        },
+        {
+          "field": "normalizationFactor",
+          "source": "instanceSize",
+          "description": "Size normalization factor from normalizationFactors table"
+        },
+        {
+          "field": "onDemandRate",
+          "source": "instanceType",
+          "description": "On-demand hourly instance rate for the domain instance type (used from Nov 7, 2026)"
+        }
+      ],
+      "tierStartDates": {
+        "1.0": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "1.1": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "1.2": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "2.3": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "2.5": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "2.7": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "2.9": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        }
+      },
+      "notes": "Legacy versions. Extended Support was extended to Nov 7, 2027. From Nov 7, 2026 the surcharge equals the on-demand instance price (AWS: it effectively doubles instance pricing); storage costs are not affected."
+    },
+    {
+      "match": {
+        "serviceCode": "opensearch",
+        "engine": "elasticsearch",
+        "versionNumbers": [
+          "5.6",
+          "6.8",
+          "7.9",
+          "7.10"
+        ]
+      },
+      "serviceName": "Amazon OpenSearch Service",
       "pricingUnit": "normalized-instance-hour (NIH)",
       "formula": "nihRate x normalizationFactor x instanceHours",
       "tiers": [
         {
+          "id": "extended",
           "label": "Extended Support",
           "monthsFromEndOfStandardSupport": [
             0,
-            12
+            36
           ],
           "rateByRegion": true
         }
@@ -9653,11 +10165,9 @@
         "ap-south-2": 0.007,
         "ap-east-1": 0.0087,
         "ca-central-1": 0.0072,
-        "ca-west-2": 0.0072,
         "sa-east-1": 0.0103,
         "me-south-1": 0.0079,
         "me-central-1": 0.0079,
-        "me-west-1": 0.0076,
         "af-south-1": 0.0086,
         "il-central-1": 0.0076,
         "ap-east-2": 0.0077,
@@ -9694,16 +10204,214 @@
           "description": "Size normalization factor from normalizationFactors table"
         }
       ],
-      "notes": "Elasticsearch (legacy) engine versions on Amazon OpenSearch Service use the same per-NIH Extended Support pricing as OpenSearch engine versions."
+      "notes": "Standard Extended Support rate ($0.0065 per NIH in us-east-1). Per AWS, the last version of each major family gets 3 years of Extended Support and other minors get 1 year; Elasticsearch 5.6 continues at this rate until Nov 7, 2028. The Extended Support end date comes from aws-service-eol-data."
     },
     {
-      "serviceCode": "docdb",
+      "match": {
+        "serviceCode": "opensearch",
+        "engine": "elasticsearch",
+        "versionNumbers": [
+          "1.5",
+          "2.3",
+          "5.1",
+          "5.3",
+          "5.5",
+          "6.0",
+          "6.2",
+          "6.3",
+          "6.4",
+          "6.5",
+          "6.7",
+          "7.1",
+          "7.4",
+          "7.7",
+          "7.8"
+        ]
+      },
+      "serviceName": "Amazon OpenSearch Service",
+      "pricingUnit": "normalized-instance-hour (NIH)",
+      "formula": "until Nov 7, 2026: nihRate x normalizationFactor x instanceHours; from Nov 7, 2026: onDemandInstanceRate x instancePriceMultiplier x instanceHours",
+      "tiers": [
+        {
+          "id": "extended",
+          "label": "Extended Support (until Nov 7, 2026)",
+          "monthsFromEndOfStandardSupport": [
+            0,
+            12
+          ],
+          "rateByRegion": true
+        },
+        {
+          "id": "extended_instance",
+          "label": "Extended Support extension (from Nov 7, 2026)",
+          "monthsFromEndOfStandardSupport": [
+            12,
+            24
+          ],
+          "instancePriceMultiplier": 1.0
+        }
+      ],
+      "normalizationFactors": {
+        "nano": 0.25,
+        "micro": 0.5,
+        "small": 1,
+        "medium": 2,
+        "large": 4,
+        "xlarge": 8,
+        "2xlarge": 16,
+        "4xlarge": 32,
+        "8xlarge": 64,
+        "9xlarge": 72,
+        "10xlarge": 80,
+        "12xlarge": 96,
+        "16xlarge": 128,
+        "18xlarge": 144,
+        "24xlarge": 192,
+        "32xlarge": 256
+      },
+      "regionalRates": {
+        "us-east-1": 0.0065,
+        "us-east-2": 0.0065,
+        "us-west-2": 0.0065,
+        "us-west-1": 0.0077,
+        "eu-west-1": 0.0072,
+        "eu-west-2": 0.0075,
+        "eu-west-3": 0.0075,
+        "eu-central-1": 0.0076,
+        "eu-central-2": 0.0083,
+        "eu-north-1": 0.0068,
+        "eu-south-1": 0.0076,
+        "eu-south-2": 0.0072,
+        "ap-northeast-1": 0.0081,
+        "ap-northeast-2": 0.0077,
+        "ap-northeast-3": 0.0081,
+        "ap-southeast-1": 0.0078,
+        "ap-southeast-2": 0.0082,
+        "ap-southeast-3": 0.0078,
+        "ap-southeast-4": 0.0082,
+        "ap-south-1": 0.007,
+        "ap-south-2": 0.007,
+        "ap-east-1": 0.0087,
+        "ca-central-1": 0.0072,
+        "sa-east-1": 0.0103,
+        "me-south-1": 0.0079,
+        "me-central-1": 0.0079,
+        "af-south-1": 0.0086,
+        "il-central-1": 0.0076,
+        "ap-east-2": 0.0077,
+        "ap-southeast-5": 0.0074,
+        "ap-southeast-6": 0.0087,
+        "ap-southeast-7": 0.0075,
+        "ca-west-1": 0.0072,
+        "mx-central-1": 0.0069,
+        "us-gov-east-1": 0.0078,
+        "us-gov-west-1": 0.0078
+      },
+      "examples": [
+        {
+          "instanceType": "m7g.medium.search",
+          "instanceSize": "medium",
+          "normalizationFactor": 2,
+          "region": "us-east-1",
+          "nihRate": 0.0065,
+          "hours": 24,
+          "dailyCost": 0.312,
+          "calculation": "0.0065 x 2 x 24 = $0.312/day"
+        }
+      ],
+      "sourceUrl": "https://aws.amazon.com/blogs/big-data/amazon-opensearch-service-extends-version-lifecycle-support-timelines/",
+      "resourceInputs": [
+        {
+          "field": "instanceHours",
+          "source": "usageAmount",
+          "description": "Number of instance hours"
+        },
+        {
+          "field": "normalizationFactor",
+          "source": "instanceSize",
+          "description": "Size normalization factor from normalizationFactors table"
+        },
+        {
+          "field": "onDemandRate",
+          "source": "instanceType",
+          "description": "On-demand hourly instance rate for the domain instance type (used from Nov 7, 2026)"
+        }
+      ],
+      "tierStartDates": {
+        "1.5": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "2.3": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "5.1": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "5.3": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "5.5": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "6.0": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "6.2": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "6.3": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "6.4": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "6.5": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "6.7": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "7.1": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "7.4": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "7.7": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        },
+        "7.8": {
+          "extended": "2025-11-07",
+          "extended_instance": "2026-11-07"
+        }
+      },
+      "notes": "Legacy versions. Extended Support was extended to Nov 7, 2027. From Nov 7, 2026 the surcharge equals the on-demand instance price (AWS: it effectively doubles instance pricing); storage costs are not affected."
+    },
+    {
+      "match": {
+        "serviceCode": "docdb",
+        "engine": null
+      },
       "serviceName": "Amazon DocumentDB",
-      "engine": "docdb",
       "pricingUnit": "vCPU-hour",
       "formula": "familyRate x vCPUs x hours (rate varies by instance family)",
       "tiers": [
         {
+          "id": "year1_2",
           "label": "Year 1-2",
           "monthsFromEndOfStandardSupport": [
             0,
@@ -9712,6 +10420,7 @@
           "rateByRegion": true
         },
         {
+          "id": "year3",
           "label": "Year 3",
           "monthsFromEndOfStandardSupport": [
             24,
@@ -10233,8 +10942,13 @@
             "year3": 0.0624
           }
         }
+      },
+      "tierStartDates": {
+        "3.6": {
+          "year1_2": "2026-03-31",
+          "year3": "2028-03-31"
+        }
       }
     }
-  ],
-  "versionsRef": "https://github.com/awslabs/aws-service-eol-data"
+  ]
 }

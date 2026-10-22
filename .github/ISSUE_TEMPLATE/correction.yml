@@ -7,8 +7,8 @@ body:
     id: entry
     attributes:
       label: Which entry
-      description: serviceCode / engine / region, plus instance family or node type if applicable
-      placeholder: "docdb / docdb / us-east-1 / r5"
+      description: serviceCode / engine / region, plus instance family or node type if applicable (engine can be null)
+      placeholder: "docdb / null / us-east-1 / r5"
     validations:
       required: true
   - type: input
@@ -28,8 +28,8 @@ body:
   - type: input
     id: source
     attributes:
-      label: Official AWS source URL
-      description: Link to the AWS pricing page that supports the correct value
+      label: Where you found the correct value
+      description: The AWS Price List API (preferred; paste the filters you used) or a link to the AWS pricing page. The pricing page can lag the Price List for new regions.
     validations:
       required: true
   - type: textarea

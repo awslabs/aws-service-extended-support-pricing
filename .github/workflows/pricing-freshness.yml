@@ -1,0 +1,68 @@
+name: Pricing freshness check
+
+# Monthly check of data/pricing.json against the live AWS Price List API.
+# Confident drift -> opens a PR. Anything needing a human -> opens an Issue.
+# Never merges automatically.
+
+on:
+  schedule:
+    - cron: '0 6 1 * *'   # monthly: 1st of the month, 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  id-token: write        # OIDC assume-role
+  contents: write        # push the update branch
+  pull-requests: write   # open the PR
+  issues: write          # open the review Issue
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.PRICING_FRESHNESS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Install deps
+        run: pip install boto3 jsonschema
+
+      - name: Run freshness check
+        id: check
+        run: python scripts/check_pricing_freshness.py
+
+      - name: Open PR for confident auto-updates
+        if: steps.check.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BR="pricing-freshness-${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BR"
+          git add data/pricing.json
+          git commit -m "Update Extended Support pricing from Price List API (automated)"
+          git push origin "$BR"
+          gh pr create --base main --head "$BR" \
+            --title "Automated pricing freshness update" \
+            --body-file freshness-report.md
+
+      - name: Open Issue when human review is needed
+        if: steps.check.outputs.needs_review == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "Pricing freshness: review needed ($(date -u +%Y-%m-%d))" \
+            --body-file freshness-report.md \
+            --label "freshness" || \
+          gh issue create \
+            --title "Pricing freshness: review needed ($(date -u +%Y-%m-%d))" \
+            --body-file freshness-report.md

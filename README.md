@@ -6,7 +6,7 @@
 [![Validate](https://github.com/awslabs/aws-service-extended-support-pricing/actions/workflows/validate.yml/badge.svg)](https://github.com/awslabs/aws-service-extended-support-pricing/actions/workflows/validate.yml)
 [![Discussions](https://img.shields.io/github/discussions/awslabs/aws-service-extended-support-pricing)](https://github.com/awslabs/aws-service-extended-support-pricing/discussions)
 
-> **NOT AN OFFICIAL AWS API.** This is a community-maintained dataset provided on a best-effort basis. It is not an official AWS product, service, or commitment. Always verify rates against the official AWS pricing pages linked in each entry's `sourceUrl` field before making financial decisions. This data does not account for negotiated discounts, EDPs, or private pricing agreements.
+> **NOT AN OFFICIAL AWS API.** This is a community republication of AWS pricing data, not an official AWS product, service, or commitment. The rates are drawn from the first-party AWS Price List and the official AWS pricing pages, and each entry links its source in `sourceUrl` so you can confirm any rate before you act on it. These are public list prices and do not account for negotiated discounts, EDPs, or private pricing agreements.
 
 A machine-readable dataset of AWS Extended Support pricing models, enabling programmatic cost calculation for resources past end of standard support.
 
@@ -38,17 +38,16 @@ data/pricing.json
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "lastUpdated": "2026-06-10",
+  "schemaVersion": "2.0",
+  "lastUpdated": "2026-10-19",
   "services": [
     {
-      "serviceCode": "eks",
+      "match": { "serviceCode": "eks", "engine": null },
       "serviceName": "Amazon EKS",
-      "engine": null,
       "pricingUnit": "cluster-hour",
       "formula": "rate x clusters x hours",
       "tiers": [
-        { "label": "Extended Support", "monthsFromEndOfStandardSupport": [0, 12], "rate": 0.60 }
+        { "id": "extended", "label": "Extended Support", "monthsFromEndOfStandardSupport": [0, 12], "rate": 0.60 }
       ],
       "sourceUrl": "https://aws.amazon.com/eks/pricing/"
     }
@@ -60,17 +59,23 @@ data/pricing.json
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `serviceCode` | string | AWS service identifier |
+| `match` | object | Join key into aws-service-eol-data. An entry prices the eol entries it matches. |
+| `match.serviceCode` | string | Copied exactly from aws-service-eol-data (`eks`, `rds`, `rds-aurora`, `elasticache`, `opensearch`, `docdb`) |
+| `match.engine` | string or null | Copied exactly from aws-service-eol-data. `null` means the service has no engine (EKS, DocumentDB) and matches eol's `null` |
+| `match.versionNumbers` | array (optional) | When present, the entry prices only these eol `versionNumber` values. Used where the rate depends on the version (OpenSearch) |
+| `match.capacityMode` | string (optional) | Aurora only: `provisioned` or `serverless-v2`. Not in the eol dataset; you supply it from your resource |
 | `serviceName` | string | Human-readable service name |
-| `engine` | string or null | Database engine for multi-engine services |
-| `pricingUnit` | string | Unit of charge (cluster-hour, vCPU-hour, node-hour, normalized-instance-hour) |
+| `pricingUnit` | string | Unit of charge (cluster-hour, vCPU-hour, ACU-hour, node-hour, normalized-instance-hour) |
 | `formula` | string | Human-readable cost calculation formula |
 | `tiers` | array | Pricing tiers with time ranges and rates |
+| `tiers[].id` | string | Stable tier key (`year1_2`, `year3`, `extended`, `extended_instance`); matches the keys in `regionalRates` / `instanceRates` |
 | `tiers[].label` | string | Tier name (e.g., "Year 1-2", "Year 3") |
-| `tiers[].monthsFromEndOfStandardSupport` | array | [start, end] months after standard support ends |
+| `tiers[].monthsFromEndOfStandardSupport` | array | [start, end] months after standard support ends. Approximate; prefer `tierStartDates` when present |
 | `tiers[].rate` | number | Fixed rate per unit (for non-regional pricing) |
-| `tiers[].rateByRegion` | boolean | If true, use `regionalRates` for per-region pricing |
+| `tiers[].rateByRegion` | boolean | If true, use `regionalRates` or `instanceRates` for per-region pricing |
 | `tiers[].multiplier` | number | Multiplier applied to base rate for this tier |
+| `tiers[].instancePriceMultiplier` | number | Surcharge as a multiple of the on-demand instance price (1.0 = equal to the instance price) |
+| `tierStartDates` | object (optional) | Exact tier start dates from the AWS release calendars: `versionNumber -> tier id -> date`. `null` means that tier does not apply to the version (Aurora MySQL 8.0 has no Year 3). Versions not listed fall back to `monthsFromEndOfStandardSupport` |
 | `regionalRates` | object | Per-region rates (when pricing varies by region) |
 | `instanceRates` | object | Per-instance rates nested as `region -> instanceKey -> {year1_2, year3}`. Used where the rate varies by instance: DocumentDB is keyed by instance family (e.g. `r5`, `t3`), ElastiCache by node type (e.g. `cache.r6g.large`). |
 | `normalizationFactors` | object | Instance size to normalization factor mapping (OpenSearch) |
@@ -80,6 +85,7 @@ data/pricing.json
 | `resourceInputs[].description` | string | Human-readable explanation |
 | `instanceClassMapping` | object | Maps DB instance class to vCPU count (RDS/Aurora). Enables cost calculation without a separate API call. |
 | `versionsRef` | string | Link to companion EOL dates repository |
+| `joinKey` | string | Plain-language description of the join rule |
 | `examples` | array | Worked cost calculation examples |
 | `sourceUrl` | string | Official AWS pricing page URL |
 
@@ -89,11 +95,12 @@ data/pricing.json
 |---------|------|-------|----------|
 | Amazon EKS | cluster-hour | Single tier: $0.60 | No |
 | Amazon RDS (MySQL/PostgreSQL) | vCPU-hour | Year 1-2, Year 3 (2x) | Yes |
-| Amazon Aurora (MySQL/PostgreSQL) | vCPU-hour | Year 1-2, Year 3 (2x) | Yes |
-| Amazon ElastiCache (Redis) | node-hour | Year 1-2, Year 3 (2x) | Yes (per node type) |
-| Amazon OpenSearch Service | NIH | Single tier | Yes |
+| Amazon Aurora (MySQL/PostgreSQL), provisioned | vCPU-hour | Year 1-2, Year 3 (2x); Aurora MySQL 8.0 has no Year 3. Aurora MySQL Year 3 rates are published only for mx-central-1 so far (see the entry's `notes`) | Yes |
+| Amazon Aurora Serverless v2 (`capacityMode: serverless-v2`) | ACU-hour | Year 1-2, Year 3 (2x) | Yes |
+| Amazon ElastiCache (Redis OSS only) | node-hour | Year 1-2, Year 3 (2x) | Yes (per node type) |
+| Amazon OpenSearch Service, current versions | NIH | Single tier | Yes |
+| Amazon OpenSearch Service, legacy versions | NIH, then instance price | NIH rate until Nov 7, 2026; surcharge equal to the on-demand instance price from Nov 7, 2026 | Yes |
 | Amazon DocumentDB | vCPU-hour | Year 1-2, Year 3 (2x) | Yes (per instance family) |
-| Amazon Aurora Serverless v2 | ACU-hour | Year 1-2, Year 3 (2x) | Yes |
 
 **Note on what each rate represents:** the EKS rate is the *total* cluster-hour cost during Extended Support (base control plane plus the Extended Support adder). Every other service lists the Extended Support *surcharge* only, applied on top of normal instance or capacity cost. RDS, Aurora, and Aurora Serverless v2 are per vCPU-hour (per ACU-hour for Serverless v2) and vary by region. DocumentDB is per vCPU-hour and varies by region and instance family (e.g. `r5` differs from `t3`) - see `instanceRates`. ElastiCache (Redis) is per node-hour and varies by region and node type - see `instanceRates`.
 
@@ -107,7 +114,7 @@ import json
 with open('data/pricing.json') as f:
     data = json.load(f)
 
-eks = next(s for s in data['services'] if s['serviceCode'] == 'eks')
+eks = next(s for s in data['services'] if s['match']['serviceCode'] == 'eks')
 clusters = 106
 hours_per_month = 730
 rate = eks['tiers'][0]['rate']
@@ -120,7 +127,7 @@ print(f"EKS Extended Support: ${monthly_cost:,.2f}/month for {clusters} clusters
 ### Calculate RDS Extended Support cost by region
 
 ```python
-rds_mysql = next(s for s in data['services'] if s['serviceCode'] == 'rds' and s['engine'] == 'mysql')
+rds_mysql = next(s for s in data['services'] if s['match'] == {'serviceCode': 'rds', 'engine': 'mysql'})
 region = 'us-east-1'
 vcpus = 8  # db.r5.2xlarge
 instances = 50
@@ -148,7 +155,7 @@ print(f"Year 3:   ${annual_y3:,.2f}/year (doubles)")
 ### Calculate ElastiCache Extended Support cost by node type
 
 ```python
-ec = next(s for s in data['services'] if s['serviceCode'] == 'elasticache')
+ec = next(s for s in data['services'] if s['match']['serviceCode'] == 'elasticache')
 region = 'us-east-1'
 node_type = 'cache.r6g.2xlarge'
 nodes = 6
@@ -168,9 +175,34 @@ This repository is a companion to [aws-service-eol-data](https://github.com/awsl
 1. **aws-service-eol-data**: "When does my version lose support?"
 2. **aws-service-extended-support-pricing** (this repo): "What will it cost if I don't upgrade?"
 
+Each pricing entry's `match` block names the lifecycle entries it prices:
+
+```python
+def find_price(pricing, eol_entry, capacity_mode="provisioned"):
+    """Return the one pricing entry for an aws-service-eol-data entry, or None.
+    capacity_mode only matters for Aurora ("provisioned" or "serverless-v2")."""
+    for s in pricing["services"]:
+        m = s["match"]
+        if m["serviceCode"] != eol_entry["serviceCode"] or m["engine"] != eol_entry.get("engine"):
+            continue
+        if m.get("versionNumbers") and eol_entry["versionNumber"] not in m["versionNumbers"]:
+            continue
+        if m.get("capacityMode") and m["capacityMode"] != capacity_mode:
+            continue
+        return s
+    return None
+```
+
+- `serviceCode` and `engine` are copied exactly from the lifecycle dataset, so `null` matches `null` (EKS and DocumentDB have no engine). **In SQL, `NULL = NULL` is not true**: join with `COALESCE(engine, '')` on both sides, or `IS NOT DISTINCT FROM`.
+- Aurora uses `serviceCode: "rds-aurora"`, matching the lifecycle dataset's RDS/Aurora split. Aurora Serverless v2 rates are under `rds-aurora` with `capacityMode: "serverless-v2"`; take the capacity mode from your cluster.
+- For tier dates, use `tierStartDates[versionNumber]` when present; otherwise count `monthsFromEndOfStandardSupport` from the lifecycle dataset's `STANDARD_SUPPORT_END` date.
+- ElastiCache Extended Support applies to **Redis OSS** versions only (v4, v5, and v6 in the [ElastiCache docs](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/extended-support-versions.html); the Health Version Catalog also lists Redis OSS 7). **No Valkey or Memcached Extended Support rates are published** as of 2026-10-20. Valkey is the engine that deprecated Redis caches are upgraded *to*, and no Valkey version has an announced end of standard support. A `valkey` lifecycle entry therefore has no price here, which is correct: those versions are current, not in Extended Support. The monthly freshness check flags any non-Redis ElastiCache Extended Support rate that appears in the AWS Price List API.
+
+CI runs `scripts/check_eol_join.py` against the current lifecycle dataset on every change and monthly. It fails if a `match` points at nothing, if a billed lifecycle entry has no price, if an entry matches more than one price, or if a tier start date falls outside the version's Extended Support window.
+
 ## Update Cadence
 
-This dataset is updated when AWS announces pricing changes for Extended Support. Pricing changes are less frequent than lifecycle date announcements. Each entry includes a `sourceUrl` pointing to the official AWS pricing page for verification.
+The dataset is updated monthly on a best-effort basis, sometimes more often (for example when AWS announces an Extended Support pricing change). On the 1st of each month a scheduled check compares every rate with the AWS Price List API, in both directions, and opens a PR or an Issue for anything that changed. The top-level `lastUpdated` tells you when a rate last changed; the monthly check re-confirms every rate even when nothing changes, so an older `lastUpdated` means the rates are stable, not stale. Each entry also includes a `sourceUrl` pointing to the official AWS pricing page as a human-readable reference; if it and the Price List disagree, the Price List is authoritative (see [CONTRIBUTING.md](CONTRIBUTING.md)).
 
 ## Contributing
 
@@ -186,16 +218,16 @@ Common contributions:
 
 ## Disclaimer
 
-This dataset is provided as-is for informational purposes on a best-effort basis. Pricing data is sourced from public AWS pricing pages and may change without notice. This project is community-maintained and there is no guarantee of completeness, accuracy, or timeliness of updates. Always verify critical pricing against the official AWS pricing pages linked in each entry's `sourceUrl` field before making financial decisions. This data does not account for negotiated discounts, EDPs, or private pricing agreements.
+This dataset is provided as-is for informational purposes. Rates are sourced from the first-party AWS Price List and public AWS pricing pages, and may change as AWS updates them. This is a community-maintained republication rather than an official AWS product; each entry links its `sourceUrl` so you can confirm critical rates against the official AWS pricing pages before making financial decisions. These are public list prices and do not account for negotiated discounts, EDPs, or private pricing agreements.
 
-## Important: Validation for Critical Decisions
+## Using this data in automated workflows
 
-If you are using this data for automated decisions (cost projections, budget forecasting, chargeback calculations, or upgrade prioritization), you SHOULD:
+If you integrate this data into cost projections, budget forecasting, chargeback, or upgrade prioritization, a few practices keep the numbers reliable:
 
-1. **Validate rates against `sourceUrl`** - each entry links to the official AWS pricing page. Cross-reference before acting on the data.
-2. **Account for pricing model differences** - this dataset reflects public on-demand Extended Support pricing only. It does not include EDP discounts, private pricing agreements, or credits.
-3. **Pin to a tagged release** - for production integrations, pin to a specific release rather than tracking the main branch.
-4. **Check `lastUpdated`** - if the dataset is more than 60 days old, re-verify rates against source URLs before acting.
+- **Cross-reference `sourceUrl`** - each entry links to the official AWS pricing page it was taken from.
+- **Account for your own pricing** - these are public on-demand Extended Support list prices; they do not include EDP discounts, private pricing agreements, or credits.
+- **Pin to a tagged release** for production integrations, rather than tracking the main branch.
+- **Check `lastUpdated`** and re-confirm against source URLs if the dataset has aged.
 
 ## License
 

@@ -4,9 +4,16 @@ on:
   push:
     paths:
       - 'data/pricing.json'
+      - 'data/schema.json'
+      - 'scripts/check_eol_join.py'
   pull_request:
     paths:
       - 'data/pricing.json'
+      - 'data/schema.json'
+      - 'scripts/check_eol_join.py'
+  schedule:
+    - cron: '0 7 1 * *'   # monthly (1st, 07:00 UTC): catch aws-service-eol-data changes that break the join
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -58,17 +65,25 @@ jobs:
 
           errors = []
           for svc in data['services']:
-              vid = f\"{svc['serviceCode']}/{svc.get('engine', '')}\"
+              m = svc['match']
+              vid = f\"{m['serviceCode']}/{m.get('engine')}/{m.get('capacityMode') or '-'}\"
+              tier_ids = {t['id'] for t in svc['tiers']}
 
               # Check: if tier has rateByRegion=true, regionalRates or instanceRates must exist
               for tier in svc['tiers']:
                   if tier.get('rateByRegion') and not (svc.get('regionalRates') or svc.get('instanceRates')):
                       errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has rateByRegion=true but no regionalRates or instanceRates object')
 
-              # Check: if tier has neither rate nor rateByRegion nor multiplier, flag it
+              # Check: every tier says how it is priced
               for tier in svc['tiers']:
-                  if 'rate' not in tier and not tier.get('rateByRegion') and 'multiplier' not in tier:
-                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has no rate, rateByRegion, or multiplier')
+                  if not any(k in tier for k in ('rate', 'multiplier', 'instancePriceMultiplier')) and not tier.get('rateByRegion'):
+                      errors.append(f'{vid}: tier \"{tier[\"label\"]}\" has no rate, rateByRegion, multiplier, or instancePriceMultiplier')
+
+              # Check: tierStartDates only name tiers this entry defines
+              for v, dates in (svc.get('tierStartDates') or {}).items():
+                  for tid in dates:
+                      if tid not in tier_ids:
+                          errors.append(f'{vid}: tierStartDates[{v}] names unknown tier {tid!r}')
 
               # Check: tier time ranges should not overlap
               sorted_tiers = sorted(svc['tiers'], key=lambda t: t['monthsFromEndOfStandardSupport'][0])
@@ -102,6 +117,9 @@ jobs:
               print(f'Pricing consistency check PASSED ({len(data[\"services\"])} services validated)')
           "
 
+      - name: Check join with aws-service-eol-data
+        run: python scripts/check_eol_join.py --eol-ref main
+
       - name: Check freshness
         run: |
           python -c "
@@ -114,11 +132,11 @@ jobs:
           last_updated = datetime.strptime(data['lastUpdated'], '%Y-%m-%d')
           age_days = (datetime.now() - last_updated).days
 
+          # lastUpdated moves only when a rate changes; the monthly freshness job
+          # re-checks every rate against the Price List API, so stable rates are
+          # not stale. Report the age, never fail on it.
           if age_days > 90:
-              print(f'FAILED: Dataset is {age_days} days old (last updated: {data[\"lastUpdated\"]}). Pricing data must be verified and lastUpdated refreshed.')
-              exit(1)
-          elif age_days > 60:
-              print(f'WARNING: Dataset is {age_days} days old (last updated: {data[\"lastUpdated\"]}). Verify rates against source URLs.')
+              print(f'WARNING: rates last changed {age_days} days ago (lastUpdated {data[\"lastUpdated\"]}). Confirm the monthly freshness job is running.')
           else:
-              print(f'Freshness check PASSED (last updated: {data[\"lastUpdated\"]}, {age_days} days ago)')
+              print(f'Freshness check PASSED (rates last changed {data[\"lastUpdated\"]}, {age_days} days ago)')
           "

@@ -17,7 +17,7 @@ This repository contains a static JSON dataset with no executable code. Security
 - All data changes require CODEOWNERS approval before merge
 - CI validates JSON schema, pricing consistency, and sourceUrl patterns on every PR
 - Every entry includes a `sourceUrl` pointing to an official AWS pricing page for independent verification
-- The `lastUpdated` field signals dataset freshness
+- The `lastUpdated` field shows when a rate last changed; the monthly freshness check re-confirms every rate against the AWS Price List API
 
 ## Consumer Guidance
 
