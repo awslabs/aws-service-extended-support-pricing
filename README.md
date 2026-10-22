@@ -202,7 +202,7 @@ CI runs `scripts/check_eol_join.py` against the current lifecycle dataset on eve
 
 ## Update Cadence
 
-The dataset is updated monthly on a best-effort basis, sometimes more often (for example when AWS announces an Extended Support pricing change). On the 1st of each month a scheduled check compares every rate with the AWS Price List API, in both directions, and opens a PR or an Issue for anything that changed. The top-level `lastUpdated` tells you when a rate last changed; the monthly check re-confirms every rate even when nothing changes, so an older `lastUpdated` means the rates are stable, not stale. Each entry also includes a `sourceUrl` pointing to the official AWS pricing page as a human-readable reference; if it and the Price List disagree, the Price List is authoritative (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+The dataset is updated monthly on a best-effort basis, sometimes more often (for example when AWS announces an Extended Support pricing change). Each month the maintainers run a check that compares every rate with the AWS Price List API, in both directions, and open a PR or an Issue for anything that changed. The scheduled workflow for this check is disabled for now, so it runs by hand. The top-level `lastUpdated` tells you when a rate last changed; the monthly check re-confirms every rate even when nothing changes, so an older `lastUpdated` means the rates are stable, not stale. Each entry also includes a `sourceUrl` pointing to the official AWS pricing page as a human-readable reference; if it and the Price List disagree, the Price List is authoritative (see [CONTRIBUTING.md](CONTRIBUTING.md)).
 
 ## Contributing
 

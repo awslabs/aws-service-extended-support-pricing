@@ -21,6 +21,6 @@ This repository contains a static JSON dataset with no executable code. Security
 
 ## Consumer Guidance
 
-- For critical financial decisions (budget forecasting, cost projections, chargeback calculations), always verify rates against the `sourceUrl` provided in each entry
+- For critical financial decisions (budget forecasting, cost projections, chargeback calculations), always verify rates against the AWS Price List API (the `sourceUrl` pricing page in each entry is a human-readable reference and can lag the Price List)
 - Pin to tagged releases rather than tracking the main branch for production integrations
 - This data does not account for negotiated discounts, EDPs, or private pricing agreements

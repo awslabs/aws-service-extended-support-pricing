@@ -4,11 +4,13 @@ Thank you for your interest in contributing! This project relies on community co
 
 ## Where rates come from
 
-The **AWS Price List API** is the authoritative source for every rate in this dataset. A
-monthly CI job (`scripts/check_pricing_freshness.py`) compares `data/pricing.json` with
-the Price List in both directions: rates that changed, and dataset rates the Price List
-does not return. It opens a PR for changes it is sure of and an Issue for anything that
-needs a person.
+The **AWS Price List API** is the authoritative source for every rate in this dataset.
+Each month, on a best-effort basis, the maintainers run `scripts/check_pricing_freshness.py`,
+which compares `data/pricing.json` with the Price List in both directions: rates that
+changed, and dataset rates the Price List does not return. Changes it is sure of go into
+a pull request, and anything that needs a person goes into an Issue. The scheduled
+workflow that ran this check automatically (`.github/workflows/pricing-freshness.yml`)
+is disabled for now, so the check runs by hand.
 
 Each entry's `sourceUrl` points to the matching AWS pricing page. Use it as the
 human-readable reference, but note that **the pricing page can lag the Price List**,

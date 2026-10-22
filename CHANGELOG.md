@@ -4,6 +4,15 @@ All notable changes to this dataset are recorded here. The format is based on
 Keep a Changelog. Releases are dated; consumers should pin to a tagged release
 rather than tracking `main`.
 
+## [2.0.1] - 2026-10-21
+
+### Changed
+- Documentation only, no data or schema change. README, CONTRIBUTING and ROADMAP
+  now say the maintainers run the monthly Price List freshness check by hand,
+  because the scheduled `pricing-freshness.yml` workflow is disabled for now.
+  ROADMAP lists re-enabling it. SECURITY now points consumers to the Price List API
+  as the reference for verifying rates, matching CONTRIBUTING.
+
 ## [2.0.0] - 2026-10-21
 
 ### Changed

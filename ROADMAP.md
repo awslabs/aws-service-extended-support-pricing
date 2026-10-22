@@ -30,8 +30,10 @@ Price List API is the authoritative source for every rate.
 ## Ongoing
 
 - **New regions and instance or node types** - the monthly freshness check compares
-  the dataset with the Price List API and opens a pull request when a published rate
-  is missing.
+  the dataset with the Price List API, and a published rate that is missing is added
+  in a pull request.
+- **Freshness automation** - re-enable the scheduled `pricing-freshness.yml` workflow
+  so the monthly check runs on its own again. Until then it runs by hand.
 - **New services** - when the lifecycle dataset adds a version that is billed in
   Extended Support and this dataset has no rate for it, the join check fails, and the
   rate is added from the Price List API.
