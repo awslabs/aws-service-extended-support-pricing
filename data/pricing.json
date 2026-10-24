@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0",
-  "lastUpdated": "2026-10-19",
+  "lastUpdated": "2026-10-24",
   "_disclaimer": "Community republication of AWS pricing data, NOT an official AWS API. Public list prices only: does not account for EDPs, private pricing, or credits. For production use, pin to a tagged release rather than tracking the main branch.",
   "versionsRef": "https://github.com/awslabs/aws-service-eol-data",
   "joinKey": "Match an aws-service-eol-data entry on (serviceCode, engine), then on versionNumber when match.versionNumbers is present, then on capacityMode for Aurora. engine is copied exactly from aws-service-eol-data, so null means the service has no engine.",
@@ -2299,13 +2299,13 @@
       "examples": [
         {
           "nodeType": "cache.r6g.large",
-          "onDemandRate": 0.166,
+          "onDemandRate": 0.206,
           "tier": "Year 1-2",
-          "extSupportRate": 0.1328,
+          "extSupportRate": 0.165,
           "nodes": 6,
           "monthlyHours": 730,
-          "monthlyCost": 581.66,
-          "calculation": "0.166 x 0.8 x 6 x 730 = $581.66/month"
+          "monthlyCost": 722.7,
+          "calculation": "0.165 x 6 x 730 = $722.70/month"
         }
       ],
       "sourceUrl": "https://aws.amazon.com/elasticache/pricing/",
@@ -10695,13 +10695,13 @@
       "notes": "Extended Support per-vCPU-hour rate varies by instance family; see instanceRates[region][family][tier].",
       "examples": [
         {
-          "instanceClass": "db.r6g.xlarge",
+          "instanceClass": "db.r5.xlarge",
           "vCPUs": 4,
           "monthlyHours": 730,
           "tier": "Year 1-2",
           "region": "us-east-1",
-          "monthlyCost": 292.0,
-          "calculation": "0.10 x 4 x 730 = $292.00/month"
+          "monthlyCost": 323.54,
+          "calculation": "0.1108 x 4 x 730 = $323.54/month"
         }
       ],
       "sourceUrl": "https://aws.amazon.com/documentdb/pricing/",
