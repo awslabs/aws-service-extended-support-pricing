@@ -4,6 +4,24 @@ All notable changes to this dataset are recorded here. The format is based on
 Keep a Changelog. Releases are dated; consumers should pin to a tagged release
 rather than tracking `main`.
 
+## [Unreleased]
+
+### Fixed
+- Aurora Serverless v2 rates are now checked per engine. The Price List names
+  the engine in each Serverless v2 usagetype (`ASv2:AuroraMySQL3`,
+  `ASv2-ExtendedSupport:...:AuroraPostgreSQL13`) and files some of these SKUs
+  under the engine's own `databaseEngine` instead of `Any`. The freshness probe
+  queried only `Any` and wrote the same result into both engines, so it could
+  not see these rates and reported no drift. Fixes #13.
+- Data from the fixed probe: `rds-aurora/postgresql/serverless-v2`
+  ap-southeast-6 Year 1-2 is 0.102 (was 0.107, the MySQL rate), and Year 3 is
+  added for ap-east-2, ap-southeast-5, ap-southeast-6 and ap-southeast-7.
+  ap-southeast-7 Year 1-2 is added for both engines.
+
+### Added
+- `tests/test_probe_rds.py`, unit tests for the RDS and Aurora probe that run
+  without AWS access, and a step in `validate.yml` that runs them.
+
 ## [2.0.1] - 2026-10-21
 
 ### Changed

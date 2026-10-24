@@ -6,11 +6,15 @@ on:
       - 'data/pricing.json'
       - 'data/schema.json'
       - 'scripts/check_eol_join.py'
+      - 'scripts/check_pricing_freshness.py'
+      - 'tests/**'
   pull_request:
     paths:
       - 'data/pricing.json'
       - 'data/schema.json'
       - 'scripts/check_eol_join.py'
+      - 'scripts/check_pricing_freshness.py'
+      - 'tests/**'
   schedule:
     - cron: '0 7 1 * *'   # monthly (1st, 07:00 UTC): catch aws-service-eol-data changes that break the join
   workflow_dispatch:
@@ -140,3 +144,6 @@ jobs:
           else:
               print(f'Freshness check PASSED (rates last changed {data[\"lastUpdated\"]}, {age_days} days ago)')
           "
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v

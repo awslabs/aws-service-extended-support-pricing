@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0",
-  "lastUpdated": "2026-10-19",
+  "lastUpdated": "2026-10-24",
   "_disclaimer": "Community republication of AWS pricing data, NOT an official AWS API. Public list prices only: does not account for EDPs, private pricing, or credits. For production use, pin to a tagged release rather than tracking the main branch.",
   "versionsRef": "https://github.com/awslabs/aws-service-eol-data",
   "joinKey": "Match an aws-service-eol-data entry on (serviceCode, engine), then on versionNumber when match.versionNumbers is present, then on capacityMode for Aurora. engine is copied exactly from aws-service-eol-data, so null means the service has no engine.",
@@ -2029,6 +2029,9 @@
         "us-west-2-lax-1": {
           "year1_2": 0.102,
           "year3": 0.204
+        },
+        "ap-southeast-7": {
+          "year1_2": 0.092
         }
       },
       "resourceInputs": [
@@ -2094,7 +2097,8 @@
           "year3": 0.224
         },
         "ap-east-2": {
-          "year1_2": 0.092
+          "year1_2": 0.092,
+          "year3": 0.184
         },
         "ap-northeast-1": {
           "year1_2": 0.102,
@@ -2133,10 +2137,12 @@
           "year3": 0.204
         },
         "ap-southeast-5": {
-          "year1_2": 0.092
+          "year1_2": 0.092,
+          "year3": 0.184
         },
         "ap-southeast-6": {
-          "year1_2": 0.107
+          "year1_2": 0.102,
+          "year3": 0.204
         },
         "ca-central-1": {
           "year1_2": 0.092,
@@ -2221,6 +2227,10 @@
         "us-west-2-lax-1": {
           "year1_2": 0.102,
           "year3": 0.204
+        },
+        "ap-southeast-7": {
+          "year1_2": 0.092,
+          "year3": 0.184
         }
       },
       "resourceInputs": [

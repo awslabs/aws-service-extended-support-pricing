@@ -198,54 +198,78 @@ def probe_eks(client, data):
              "entry": entry, "path": ["tiers", 0, "rate"], "confident": True}]
 
 
-# dataset match key -> Price List databaseEngine + which price unit to keep.
-# Serverless v2 is priced per ACU under databaseEngine "Any" and applies to
-# both Aurora engines, so two dataset entries share one Price List query.
+# dataset match key -> which Price List rows price it.
+# dbs: databaseEngine values to query. Provisioned rows are priced per vCPU and
+#      filed under the engine's own databaseEngine.
+# asv2: Serverless v2 (ACU) rows only, routed by the engine token in the
+#      usagetype (e.g. "ExtendedSupport:Yr1-Yr2:ASv2:AuroraMySQL3" or
+#      "ASv2-ExtendedSupport:Yr3:AuroraPostgreSQL13"). Serverless v2 rates are
+#      engine-specific: the Price List files some under databaseEngine "Any"
+#      and others under the engine's own value, so both are queried, and one
+#      engine's rate must never be written into the other engine's entry.
 RDS_MAP = [
-    {"sc": "rds", "engine": "mysql", "mode": None, "db": "MySQL", "unit": "vCPU"},
-    {"sc": "rds", "engine": "postgresql", "mode": None, "db": "PostgreSQL", "unit": "vCPU"},
-    {"sc": "rds-aurora", "engine": "mysql", "mode": "provisioned", "db": "Aurora MySQL", "unit": "vCPU"},
-    {"sc": "rds-aurora", "engine": "postgresql", "mode": "provisioned", "db": "Aurora PostgreSQL", "unit": "vCPU"},
-    {"sc": "rds-aurora", "engine": "mysql", "mode": "serverless-v2", "db": "Any", "unit": "ACU"},
-    {"sc": "rds-aurora", "engine": "postgresql", "mode": "serverless-v2", "db": "Any", "unit": "ACU"},
+    {"sc": "rds", "engine": "mysql", "mode": None, "dbs": ("MySQL",), "asv2": None},
+    {"sc": "rds", "engine": "postgresql", "mode": None, "dbs": ("PostgreSQL",), "asv2": None},
+    {"sc": "rds-aurora", "engine": "mysql", "mode": "provisioned",
+     "dbs": ("Aurora MySQL",), "asv2": None},
+    {"sc": "rds-aurora", "engine": "postgresql", "mode": "provisioned",
+     "dbs": ("Aurora PostgreSQL",), "asv2": None},
+    {"sc": "rds-aurora", "engine": "mysql", "mode": "serverless-v2",
+     "dbs": ("Any", "Aurora MySQL"), "asv2": "AuroraMySQL"},
+    {"sc": "rds-aurora", "engine": "postgresql", "mode": "serverless-v2",
+     "dbs": ("Any", "Aurora PostgreSQL"), "asv2": "AuroraPostgreSQL"},
 ]
 RDS_TIERS = {"year1_2": "Year 1, Year 2", "year3": "Year 3"}  # non-PP schedule
+
+
+def _rds_row_matches(m, usagetype, unit):
+    """Does one Price List row belong to the RDS_MAP entry m?
+
+    Serverless v2 rows are identified by "ASv2" in the usagetype, not by the
+    unit: at least one region (ap-southeast-7) labels an ASv2 SKU "vCPU-hour".
+    Provisioned rows are vCPU-hour rows that are not ASv2."""
+    is_asv2 = "ASv2" in usagetype
+    if m["asv2"]:
+        return is_asv2 and m["asv2"] in usagetype
+    return not is_asv2 and "vcpu" in (unit or "").lower()
 
 
 def probe_rds(client, data):
     """RDS/Aurora ES per-vCPU surcharge (+ Aurora Serverless v2 per-ACU).
     Filter by databaseEngine + extendedSupportPricingYear; region comes from
-    regionCode in the response, so no region-name map is needed. The unit filter
-    separates provisioned (vCPU-hour) from Serverless v2 (ACU-hour), which can
-    appear under the same databaseEngine."""
+    regionCode in the response, so no region-name map is needed. Rows are
+    assigned to entries by _rds_row_matches()."""
     comps = []
-    cache = {}  # (db, unit) -> {regionCode: {tierKey: rate}}
+    rows = {}  # (databaseEngine, tier_key) -> [(region, rate, unit, usagetype)]
+
+    def fetch(db, tier_key):
+        if (db, tier_key) not in rows:
+            out = []
+            for p in paginate_products(client, "AmazonRDS", [
+                {"Type": "TERM_MATCH", "Field": "databaseEngine", "Value": db},
+                {"Type": "TERM_MATCH", "Field": "extendedSupportPricingYear",
+                 "Value": RDS_TIERS[tier_key]},
+            ]):
+                attrs = p.get("product", {}).get("attributes", {})
+                region = attrs.get("regionCode")
+                rate, unit = _usd_ondemand(p)
+                if region and rate is not None:
+                    out.append((region, rate, unit, attrs.get("usagetype", "")))
+            rows[(db, tier_key)] = out
+        return rows[(db, tier_key)]
+
     for m in RDS_MAP:
         entry = find_entry(data, m["sc"], m["engine"], m["mode"])
         if not entry:
             continue
-        ck = (m["db"], m["unit"])
-        if ck not in cache:
-            api = {}
-            for tier_key, es_year in RDS_TIERS.items():
-                for p in paginate_products(client, "AmazonRDS", [
-                    {"Type": "TERM_MATCH", "Field": "databaseEngine", "Value": m["db"]},
-                    {"Type": "TERM_MATCH", "Field": "extendedSupportPricingYear", "Value": es_year},
-                ]):
-                    attrs = p.get("product", {}).get("attributes", {})
-                    region = attrs.get("regionCode")
-                    if not region:
-                        continue
-                    rate, unit = _usd_ondemand(p)
-                    if rate is None:
-                        continue
-                    if m["unit"].lower() not in (unit or "").lower():
-                        continue  # keep vCPU-hour OR ACU-hour per mapping
-                    api.setdefault(region, {})[tier_key] = rate
-            cache[ck] = api
-        api = cache[ck]
-        rr = entry.setdefault("regionalRates", {})
         label_svc = f"{m['sc']}/{m['engine']}" + (f"/{m['mode']}" if m["mode"] else "")
+        api = {}  # region -> tier_key -> set of rates
+        for tier_key in RDS_TIERS:
+            for db in m["dbs"]:
+                for region, rate, unit, usagetype in fetch(db, tier_key):
+                    if _rds_row_matches(m, usagetype, unit):
+                        api.setdefault(region, {}).setdefault(tier_key, set()).add(rate)
+        rr = entry.setdefault("regionalRates", {})
         for tier_key in RDS_TIERS:
             found = sum(1 for tiers in api.values() if tier_key in tiers)
             expected = any(isinstance(v, dict) and tier_key in v for v in rr.values())
@@ -255,8 +279,17 @@ def probe_rds(client, data):
                     if isinstance(v, dict) and tier_key in v and tier_key not in api.get(region, {}):
                         comps.append(dataset_only(label_svc, entry, f"{region} {tier_key}", v[tier_key]))
         for region, tiers in sorted(api.items()):
-            for tier_key, rate in tiers.items():
+            for tier_key, rates in sorted(tiers.items()):
                 cur = rr.get(region, {}).get(tier_key)
+                if len(rates) > 1:
+                    # Several SKUs (engine versions) for one region and tier
+                    # disagree. Never pick one silently.
+                    comps.append({"service": label_svc,
+                                  "label": f"{region} {tier_key} (conflicting Price List rates)",
+                                  "dataset_value": cur, "api_value": sorted(rates),
+                                  "entry": entry, "path": None, "confident": False})
+                    continue
+                rate = next(iter(rates))
                 if cur is None or abs(cur - rate) > TOL:
                     comps.append({"service": label_svc,
                                   "label": f"{region} {tier_key}",
