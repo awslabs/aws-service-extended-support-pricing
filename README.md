@@ -96,7 +96,7 @@ data/pricing.json
 | Amazon EKS | cluster-hour | Single tier: $0.60 | No |
 | Amazon RDS (MySQL/PostgreSQL) | vCPU-hour | Year 1-2, Year 3 (2x) | Yes |
 | Amazon Aurora (MySQL/PostgreSQL), provisioned | vCPU-hour | Year 1-2, Year 3 (2x); Aurora MySQL 8.0 has no Year 3. Aurora MySQL Year 3 rates are published only for mx-central-1 so far (see the entry's `notes`) | Yes |
-| Amazon Aurora Serverless v2 (`capacityMode: serverless-v2`) | ACU-hour | Year 1-2, Year 3 (2x) | Yes |
+| Amazon Aurora Serverless v2 (`capacityMode: serverless-v2`) | ACU-hour | Year 1-2, Year 3 (2x). Rates are per engine. Aurora MySQL Serverless v2 Year 3 is published only for mx-central-1 so far (see the entry's `notes`) | Yes |
 | Amazon ElastiCache (Redis OSS only) | node-hour | Year 1-2, Year 3 (2x) | Yes (per node type) |
 | Amazon OpenSearch Service, current versions | NIH | Single tier | Yes |
 | Amazon OpenSearch Service, legacy versions | NIH, then instance price | NIH rate until Nov 7, 2026; surcharge equal to the on-demand instance price from Nov 7, 2026 | Yes |
