@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0",
-  "lastUpdated": "2026-10-19",
+  "lastUpdated": "2026-10-26",
   "_disclaimer": "Community republication of AWS pricing data, NOT an official AWS API. Public list prices only: does not account for EDPs, private pricing, or credits. For production use, pin to a tagged release rather than tracking the main branch.",
   "versionsRef": "https://github.com/awslabs/aws-service-eol-data",
   "joinKey": "Match an aws-service-eol-data entry on (serviceCode, engine), then on versionNumber when match.versionNumbers is present, then on capacityMode for Aurora. engine is copied exactly from aws-service-eol-data, so null means the service has no engine.",
@@ -1890,55 +1890,43 @@
       ],
       "regionalRates": {
         "us-east-1": {
-          "year1_2": 0.085,
-          "year3": 0.17
+          "year1_2": 0.085
         },
         "af-south-1": {
-          "year1_2": 0.113,
-          "year3": 0.226
+          "year1_2": 0.113
         },
         "ap-east-1": {
-          "year1_2": 0.112,
-          "year3": 0.224
+          "year1_2": 0.112
         },
         "ap-east-2": {
           "year1_2": 0.092
         },
         "ap-northeast-1": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "ap-northeast-2": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "ap-northeast-3": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "ap-south-1": {
-          "year1_2": 0.097,
-          "year3": 0.194
+          "year1_2": 0.097
         },
         "ap-south-2": {
-          "year1_2": 0.097,
-          "year3": 0.194
+          "year1_2": 0.097
         },
         "ap-southeast-1": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "ap-southeast-2": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "ap-southeast-3": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "ap-southeast-4": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "ap-southeast-5": {
           "year1_2": 0.092
@@ -1947,90 +1935,71 @@
           "year1_2": 0.107
         },
         "ca-central-1": {
-          "year1_2": 0.092,
-          "year3": 0.184
-        },
-        "ca-west-1": {
-          "year1_2": 0.092,
-          "year3": 0.184
+          "year1_2": 0.092
         },
         "eu-central-1": {
-          "year1_2": 0.104,
-          "year3": 0.207
+          "year1_2": 0.104
         },
         "eu-central-2": {
-          "year1_2": 0.114,
-          "year3": 0.228
+          "year1_2": 0.114
         },
         "eu-north-1": {
-          "year1_2": 0.087,
-          "year3": 0.175
+          "year1_2": 0.087
         },
         "eu-south-1": {
-          "year1_2": 0.1,
-          "year3": 0.2
+          "year1_2": 0.1
         },
         "eu-south-2": {
-          "year1_2": 0.095,
-          "year3": 0.19
+          "year1_2": 0.095
         },
         "eu-west-1": {
-          "year1_2": 0.095,
-          "year3": 0.19
+          "year1_2": 0.095
         },
         "eu-west-2": {
-          "year1_2": 0.1,
-          "year3": 0.2
+          "year1_2": 0.1
         },
         "eu-west-3": {
-          "year1_2": 0.1,
-          "year3": 0.2
+          "year1_2": 0.1
         },
         "il-central-1": {
-          "year1_2": 0.1,
-          "year3": 0.2
+          "year1_2": 0.1
         },
         "me-central-1": {
-          "year1_2": 0.105,
-          "year3": 0.209
+          "year1_2": 0.105
         },
         "me-south-1": {
-          "year1_2": 0.105,
-          "year3": 0.209
+          "year1_2": 0.105
         },
         "mx-central-1": {
           "year1_2": 0.089,
           "year3": 0.179
         },
         "sa-east-1": {
-          "year1_2": 0.178,
-          "year3": 0.356
+          "year1_2": 0.178
         },
         "us-east-2": {
-          "year1_2": 0.085,
-          "year3": 0.17
+          "year1_2": 0.085
         },
         "us-gov-east-1": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "us-gov-west-1": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
         },
         "us-west-1": {
-          "year1_2": 0.095,
-          "year3": 0.19
+          "year1_2": 0.095
         },
         "us-west-2": {
-          "year1_2": 0.085,
-          "year3": 0.17
+          "year1_2": 0.085
         },
         "us-west-2-lax-1": {
-          "year1_2": 0.102,
-          "year3": 0.204
+          "year1_2": 0.102
+        },
+        "ap-southeast-7": {
+          "year1_2": 0.092
         }
       },
+      "notes": "Rates are per engine: the AWS Price List API prices Aurora Serverless v2 Extended Support separately for Aurora MySQL and Aurora PostgreSQL (engine in the usagetype). Year 3: the Price List publishes an Aurora MySQL Serverless v2 Year 3 rate only for mx-central-1 so far (as of 2026-10-24), and the Aurora MySQL release calendar lists no Year 3 pricing for Aurora MySQL 3 (8.0). No Serverless v2 Year 1-2 rate is published for Aurora MySQL in ca-west-1. The monthly freshness check adds each rate when AWS publishes it.",
       "resourceInputs": [
         {
           "field": "acus",
@@ -2094,7 +2063,8 @@
           "year3": 0.224
         },
         "ap-east-2": {
-          "year1_2": 0.092
+          "year1_2": 0.092,
+          "year3": 0.184
         },
         "ap-northeast-1": {
           "year1_2": 0.102,
@@ -2133,10 +2103,12 @@
           "year3": 0.204
         },
         "ap-southeast-5": {
-          "year1_2": 0.092
+          "year1_2": 0.092,
+          "year3": 0.184
         },
         "ap-southeast-6": {
-          "year1_2": 0.107
+          "year1_2": 0.102,
+          "year3": 0.204
         },
         "ca-central-1": {
           "year1_2": 0.092,
@@ -2221,6 +2193,10 @@
         "us-west-2-lax-1": {
           "year1_2": 0.102,
           "year3": 0.204
+        },
+        "ap-southeast-7": {
+          "year1_2": 0.092,
+          "year3": 0.184
         }
       },
       "resourceInputs": [

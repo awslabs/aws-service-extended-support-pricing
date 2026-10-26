@@ -4,6 +4,37 @@ All notable changes to this dataset are recorded here. The format is based on
 Keep a Changelog. Releases are dated; consumers should pin to a tagged release
 rather than tracking `main`.
 
+## [2.0.2] - 2026-10-26
+
+### Fixed
+- **Aurora Serverless v2 rates are now per engine.** The AWS Price List API prices
+  Serverless v2 Extended Support separately for Aurora MySQL and Aurora PostgreSQL
+  (the engine is in the usagetype), but the freshness check read one engine-agnostic
+  result and wrote it into both entries, so it never saw these errors. Reported in #13
+  and fixed in #14 by @TonyTech404; thank you. Rates re-checked against the Price List
+  on 2026-10-26:
+  - `postgresql/serverless-v2`: ap-southeast-6 Year 1-2 0.107 -> 0.102 (0.107 was the
+    MySQL rate); Year 3 added for ap-east-2 (0.184), ap-southeast-5 (0.184),
+    ap-southeast-6 (0.204) and ap-southeast-7 (0.184); ap-southeast-7 Year 1-2 added
+    (0.092).
+  - `mysql/serverless-v2`: ap-southeast-7 Year 1-2 added (0.092; the Price List labels
+    this SKU vCPU-hour).
+  - `mysql/serverless-v2`: removed 33 rates the Price List does not publish: Year 3 in
+    32 regions (they were PostgreSQL's Year 3 rates; the only Aurora MySQL Serverless v2
+    Year 3 rate is in mx-central-1, and the Aurora MySQL release calendar lists no Year 3
+    pricing for Aurora MySQL 3), and ca-west-1 Year 1-2 and Year 3 (no Aurora MySQL
+    Serverless v2 SKU there). The entry's `notes` explain this.
+- The freshness check now reports conflicting Price List rates for one region and tier
+  for review, instead of keeping whichever came last.
+
+### Changed
+- The freshness check now checks the EKS Extended Support rate in every region, not only
+  us-east-1 (thanks to @hoangchunghien, who confirmed the same rate in all 36 regions in
+  #7). A different price in another region is reported for review, because the EKS entry
+  has one global rate.
+- Unit tests for the freshness probes (`tests/`, stdlib `unittest`, no AWS access) run in
+  `validate.yml`.
+
 ## [2.0.1] - 2026-10-21
 
 ### Changed

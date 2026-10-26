@@ -26,7 +26,10 @@ aws pricing get-products --region us-east-1 --service-code AmazonRDS \
               {"Type":"TERM_MATCH","Field":"regionCode","Value":"ap-east-2"}]'
 ```
 
-This example looks up Aurora Serverless v2 (Year 1-2) in ap-east-2. The exact service
+This example looks up Aurora Serverless v2 (Year 1-2) in ap-east-2. Serverless v2 rates
+are per engine: the engine is in the `usagetype` (for example `ASv2:AuroraMySQL3` or
+`ASv2-ExtendedSupport:...:AuroraPostgreSQL13`), and some PostgreSQL rates are filed under
+`databaseEngine` `Aurora PostgreSQL` instead of `Any`. The exact service
 code and filters for every entry are in the probe functions of
 `scripts/check_pricing_freshness.py`.
 

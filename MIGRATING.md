@@ -13,7 +13,7 @@ unaffected. v2 is the recommended path forward.
 |----|----|
 | top-level `serviceCode`, `engine` | `match.serviceCode`, `match.engine` |
 | `serviceCode: "aurora"` | `match.serviceCode: "rds-aurora"`, `match.capacityMode: "provisioned"` |
-| `serviceCode: "aurora-serverless-v2"` (one entry, `engine: null`) | `match.serviceCode: "rds-aurora"`, `match.capacityMode: "serverless-v2"`, one entry per engine (`mysql`, `postgresql`) with the same rates |
+| `serviceCode: "aurora-serverless-v2"` (one entry, `engine: null`) | `match.serviceCode: "rds-aurora"`, `match.capacityMode: "serverless-v2"`, one entry per engine (`mysql`, `postgresql`); since 2.0.2 the rates are per engine and can differ |
 | DocumentDB `engine: "docdb"` | `match.engine: null` (matches the lifecycle dataset) |
 | one OpenSearch entry per engine | two entries per engine, selected by `match.versionNumbers`: current versions (per-NIH rate) and legacy versions (per-NIH rate, then a surcharge equal to the on-demand instance price from Nov 7, 2026) |
 | tiers identified by `label` | tiers also carry a stable `id` (`year1_2`, `year3`, `extended`, `extended_instance`) |
