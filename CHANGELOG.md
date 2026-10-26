@@ -4,6 +4,20 @@ All notable changes to this dataset are recorded here. The format is based on
 Keep a Changelog. Releases are dated; consumers should pin to a tagged release
 rather than tracking `main`.
 
+## [2.0.3] - 2026-10-26
+
+### Fixed
+- **Two worked examples in `data/pricing.json`** no longer matched the dataset's own
+  rates (no rate changes, so `lastUpdated` is unchanged). Reported and fixed in #12 by
+  @TonyTech404; thank you.
+  - DocumentDB: the example used `db.r6g.xlarge`, which has no Extended Support rate (the
+    families are r4, r5 and t3). It now uses `db.r5.xlarge`:
+    0.1108 x 4 x 730 = $323.54/month (us-east-1, Year 1-2).
+  - ElastiCache: the example estimated Extended Support as 80% of the on-demand price.
+    It now uses the entry's own per-node-type rate for `cache.r6g.large` in us-east-1:
+    0.165 x 6 x 730 = $722.70/month (Year 1-2). `onDemandRate` is 0.206, the Redis OSS
+    on-demand price. Both checked against the AWS Price List on 2026-10-26.
+
 ## [2.0.2] - 2026-10-26
 
 ### Fixed
