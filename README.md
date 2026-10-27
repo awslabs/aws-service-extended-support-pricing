@@ -83,7 +83,7 @@ data/pricing.json
 | `resourceInputs[].field` | string | The variable name used in the formula |
 | `resourceInputs[].source` | string | Where to get this value (e.g., instanceClass, clusterCount) |
 | `resourceInputs[].description` | string | Human-readable explanation |
-| `instanceClassMapping` | object | Maps DB instance class to vCPU count (RDS/Aurora). Enables cost calculation without a separate API call. |
+| `instanceClassMapping` | object | Maps DB instance class to vCPU count (RDS, Aurora, DocumentDB). Enables cost calculation without a separate API call. |
 | `versionsRef` | string | Link to companion EOL dates repository |
 | `joinKey` | string | Plain-language description of the join rule |
 | `examples` | array | Worked cost calculation examples |
