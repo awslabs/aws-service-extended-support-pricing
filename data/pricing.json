@@ -10553,6 +10553,24 @@
         "db.m7g.16xlarge": {
           "vCPUs": 64
         },
+        "db.r4.large": {
+          "vCPUs": 2
+        },
+        "db.r4.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r4.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r4.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r4.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r4.16xlarge": {
+          "vCPUs": 64
+        },
         "db.r5.large": {
           "vCPUs": 2
         },
