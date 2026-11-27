@@ -83,7 +83,7 @@ data/pricing.json
 | `resourceInputs[].field` | string | The variable name used in the formula |
 | `resourceInputs[].source` | string | Where to get this value (e.g., instanceClass, clusterCount) |
 | `resourceInputs[].description` | string | Human-readable explanation |
-| `instanceClassMapping` | object | Maps DB instance class to vCPU count (RDS/Aurora). Enables cost calculation without a separate API call. |
+| `instanceClassMapping` | object | Maps DB instance class to vCPU count (RDS, Aurora, DocumentDB). Enables cost calculation without a separate API call. |
 | `versionsRef` | string | Link to companion EOL dates repository |
 | `joinKey` | string | Plain-language description of the join rule |
 | `examples` | array | Worked cost calculation examples |
@@ -95,12 +95,14 @@ data/pricing.json
 |---------|------|-------|----------|
 | Amazon EKS | cluster-hour | Single tier: $0.60 | No |
 | Amazon RDS (MySQL/PostgreSQL) | vCPU-hour | Year 1-2, Year 3 (2x) | Yes |
-| Amazon Aurora (MySQL/PostgreSQL), provisioned | vCPU-hour | Year 1-2, Year 3 (2x); Aurora MySQL 8.0 has no Year 3. Aurora MySQL Year 3 rates are published only for mx-central-1 so far (see the entry's `notes`) | Yes |
+| Amazon Aurora (MySQL/PostgreSQL), provisioned | vCPU-hour | Year 1-2, Year 3. Aurora PostgreSQL Year 3 is 2x. Aurora MySQL 5.7 Year 3 is published in 36 of 37 regions at the Year 1-2 rate (see the entry's `notes`); Aurora MySQL 8.0 has no Year 3 | Yes |
 | Amazon Aurora Serverless v2 (`capacityMode: serverless-v2`) | ACU-hour | Year 1-2, Year 3 (2x). Rates are per engine. Aurora MySQL Serverless v2 Year 3 is published only for mx-central-1 so far (see the entry's `notes`) | Yes |
 | Amazon ElastiCache (Redis OSS only) | node-hour | Year 1-2, Year 3 (2x) | Yes (per node type) |
 | Amazon OpenSearch Service, current versions | NIH | Single tier | Yes |
 | Amazon OpenSearch Service, legacy versions | NIH, then instance price | NIH rate until Nov 7, 2026; surcharge equal to the on-demand instance price from Nov 7, 2026 | Yes |
 | Amazon DocumentDB | vCPU-hour | Year 1-2, Year 3 (2x) | Yes (per instance family) |
+
+**Note on missing regions:** a region that is missing from an entry's `regionalRates` or `instanceRates` means AWS publishes no Extended Support rate there. It does not mean the rate is $0.
 
 **Note on what each rate represents:** the EKS rate is the *total* cluster-hour cost during Extended Support (base control plane plus the Extended Support adder). Every other service lists the Extended Support *surcharge* only, applied on top of normal instance or capacity cost. RDS, Aurora, and Aurora Serverless v2 are per vCPU-hour (per ACU-hour for Serverless v2) and vary by region. DocumentDB is per vCPU-hour and varies by region and instance family (e.g. `r5` differs from `t3`) - see `instanceRates`. ElastiCache (Redis) is per node-hour and varies by region and node type - see `instanceRates`.
 

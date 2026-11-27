@@ -8,10 +8,12 @@ Price List API is the authoritative source for every rate.
 
 ## Planned
 
-- **OpenSearch legacy-version rate from the Price List API** - the surcharge that
-  starts Nov 7, 2026 for legacy Elasticsearch and OpenSearch versions currently comes
-  from the AWS announcement. Once the Price List API publishes it, the dataset
-  switches to those values and the monthly freshness check covers it.
+- **OpenSearch legacy-version rate from the Price List API** - the Price List API now
+  publishes the surcharge that started Nov 7, 2026 for legacy Elasticsearch and
+  OpenSearch versions, one SKU per instance type. The entries still model the
+  surcharge as the on-demand instance price
+  (`instancePriceMultiplier` 1.0), which matches all compared SKUs. Moving the
+  per-instance rates into `pricing.json` itself is open.
 - **Cost estimate with your pricing** - a script that reads your inventory (service,
   engine, version, region, and quantity in each entry's rate unit) and both
   datasets, and outputs the monthly Extended Support cost per resource and pricing
@@ -26,6 +28,15 @@ Price List API is the authoritative source for every rate.
     estimate. It runs in your account and the results stay with you.
   Negotiated rates and billing data are customer-specific and are never shipped in
   the dataset.
+- **Price List SKU or CUR usage type for each rate, to find Extended Support in your
+  CUR** - a way to go from a resource to the lines that bill it in the Cost and Usage
+  Report, so you can read your private rate and discount next to the public rate. The
+  SKU (`product_sku`) and the usage type (`line_item_usage_type`) both match the Price
+  List in the CUR data checked. The format is still open: the lookup differs per
+  service (RDS and Aurora by engine version, DocumentDB and ElastiCache by instance
+  type, OpenSearch legacy versions per instance type, EKS in two parts), and a flat
+  table, new keys under each entry, and a lookup helper are being compared.
+  SKUs and usage types are public Price List identifiers and carry no customer data.
 
 ## Ongoing
 
