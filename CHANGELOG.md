@@ -4,6 +4,42 @@ All notable changes to this dataset are recorded here. The format is based on
 Keep a Changelog. Releases are dated; consumers should pin to a tagged release
 rather than tracking `main`.
 
+## [2.0.4] - 2026-11-26
+
+### Added
+- **Aurora MySQL Year 3 rates in 36 of 37 regions** (all except `us-west-2-lax-1`),
+  read from the AWS Price List API on 2026-11-26 (usage type
+  `ExtendedSupport:Yr3:AuroraMySQL2`, Aurora MySQL 5.7). The published Year 3 rate
+  equals the Year 1-2 rate (for example us-east-1 0.10), unlike Aurora PostgreSQL and
+  RDS, where Year 3 is double. Only Aurora MySQL 5.7 has a Year 3 tier (it starts
+  2026-12-01).
+- **Amazon RDS for MySQL 9.7** tier start dates: Year 1-2 2031-08-01, Year 3
+  2033-08-01 (matches the end of standard support in `aws-service-eol-data`).
+- **Six `db.r4` classes in the DocumentDB `instanceClassMapping`**
+  (`db.r4.large` to `db.r4.16xlarge`, 87 classes in total), so the `r4` instance
+  rates can be turned into a cost without a separate lookup. Contributed in #17 by
+  @hoangchunghien; thank you.
+
+### Fixed
+- **Aurora MySQL, mx-central-1 Year 3** is now 0.105 (was 0.21). The Price List also
+  lists 0.21 for mx-central-1 under the Aurora MySQL 3 (8.0) Year 3 usage type, but
+  Aurora MySQL 8.0 has no Year 3 tier, so the dataset uses the 5.7 value. The earlier
+  advice to estimate Aurora MySQL Year 3 as 2x the Year 1-2 rate was wrong for Aurora
+  MySQL 5.7 and is removed from the entry's `notes`. If you applied that estimate,
+  your Year 3 figure for Aurora MySQL 5.7 is twice the published rate.
+
+### Documentation
+- README: a region missing from an entry's `regionalRates` or `instanceRates` means
+  AWS publishes no Extended Support rate there; it does not mean the rate is $0.
+- The OpenSearch legacy-version `notes` now name the Price List usage type for the
+  Nov 7, 2026 surcharge (`<REGION>-EnhancedOSExtendedSupport:<instance>`). Compared on
+  2026-11-26 with the on-demand `ESInstance` rate of the same instance type in the same
+  Region, 5,997 of the 6,161 SKUs are identical and 148 differ only by rounding (less
+  than 0.00001); 16 GovCloud instance types have no on-demand SKU to compare. The
+  dataset's `instancePriceMultiplier` of 1.0 still holds.
+- ROADMAP: added the Price List SKU or CUR usage type for each rate (to find Extended
+  Support in your Cost and Usage Report) as planned work.
+
 ## [2.0.3] - 2026-10-26
 
 ### Fixed

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0",
-  "lastUpdated": "2026-10-26",
+  "lastUpdated": "2026-11-26",
   "_disclaimer": "Community republication of AWS pricing data, NOT an official AWS API. Public list prices only: does not account for EDPs, private pricing, or credits. For production use, pin to a tagged release rather than tracking the main branch.",
   "versionsRef": "https://github.com/awslabs/aws-service-eol-data",
   "joinKey": "Match an aws-service-eol-data entry on (serviceCode, engine), then on versionNumber when match.versionNumbers is present, then on capacityMode for Aurora. engine is copied exactly from aws-service-eol-data, so null means the service has no engine.",
@@ -483,6 +483,10 @@
         }
       },
       "tierStartDates": {
+        "9.7": {
+          "year1_2": "2031-08-01",
+          "year3": "2033-08-01"
+        },
         "8.4": {
           "year1_2": "2029-08-01",
           "year3": "2031-08-01"
@@ -1002,113 +1006,148 @@
       ],
       "regionalRates": {
         "us-east-1": {
-          "year1_2": 0.1
+          "year1_2": 0.1,
+          "year3": 0.1
         },
         "us-east-2": {
-          "year1_2": 0.1
+          "year1_2": 0.1,
+          "year3": 0.1
         },
         "us-west-2": {
-          "year1_2": 0.1
+          "year1_2": 0.1,
+          "year3": 0.1
         },
         "us-west-1": {
-          "year1_2": 0.112
+          "year1_2": 0.112,
+          "year3": 0.112
         },
         "eu-west-1": {
-          "year1_2": 0.112
+          "year1_2": 0.112,
+          "year3": 0.112
         },
         "eu-west-2": {
-          "year1_2": 0.118
+          "year1_2": 0.118,
+          "year3": 0.118
         },
         "eu-west-3": {
-          "year1_2": 0.118
+          "year1_2": 0.118,
+          "year3": 0.118
         },
         "eu-central-1": {
-          "year1_2": 0.122
+          "year1_2": 0.122,
+          "year3": 0.122
         },
         "eu-central-2": {
-          "year1_2": 0.134
+          "year1_2": 0.134,
+          "year3": 0.134
         },
         "eu-north-1": {
-          "year1_2": 0.103
+          "year1_2": 0.103,
+          "year3": 0.103
         },
         "eu-south-1": {
-          "year1_2": 0.118
+          "year1_2": 0.118,
+          "year3": 0.118
         },
         "eu-south-2": {
-          "year1_2": 0.112
+          "year1_2": 0.112,
+          "year3": 0.112
         },
         "ap-northeast-1": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "ap-northeast-2": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "ap-northeast-3": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "ap-southeast-1": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "ap-southeast-2": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "ap-southeast-3": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "ap-southeast-4": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "ap-south-1": {
-          "year1_2": 0.114
+          "year1_2": 0.114,
+          "year3": 0.114
         },
         "ap-south-2": {
-          "year1_2": 0.114
+          "year1_2": 0.114,
+          "year3": 0.114
         },
         "ap-east-1": {
-          "year1_2": 0.132
+          "year1_2": 0.132,
+          "year3": 0.132
         },
         "ca-central-1": {
-          "year1_2": 0.108
+          "year1_2": 0.108,
+          "year3": 0.108
         },
         "sa-east-1": {
-          "year1_2": 0.21
+          "year1_2": 0.21,
+          "year3": 0.21
         },
         "me-south-1": {
-          "year1_2": 0.123
+          "year1_2": 0.123,
+          "year3": 0.123
         },
         "me-central-1": {
-          "year1_2": 0.123
+          "year1_2": 0.123,
+          "year3": 0.123
         },
         "af-south-1": {
-          "year1_2": 0.133
+          "year1_2": 0.133,
+          "year3": 0.133
         },
         "il-central-1": {
-          "year1_2": 0.118
+          "year1_2": 0.118,
+          "year3": 0.118
         },
         "ap-east-2": {
-          "year1_2": 0.108
+          "year1_2": 0.108,
+          "year3": 0.108
         },
         "ap-southeast-5": {
-          "year1_2": 0.108
+          "year1_2": 0.108,
+          "year3": 0.108
         },
         "ap-southeast-6": {
-          "year1_2": 0.126
+          "year1_2": 0.126,
+          "year3": 0.126
         },
         "ap-southeast-7": {
-          "year1_2": 0.108
+          "year1_2": 0.108,
+          "year3": 0.108
         },
         "ca-west-1": {
-          "year1_2": 0.108
+          "year1_2": 0.108,
+          "year3": 0.108
         },
         "mx-central-1": {
           "year1_2": 0.105,
-          "year3": 0.21
+          "year3": 0.105
         },
         "us-gov-east-1": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "us-gov-west-1": {
-          "year1_2": 0.12
+          "year1_2": 0.12,
+          "year3": 0.12
         },
         "us-west-2-lax-1": {
           "year1_2": 0.12
@@ -1382,7 +1421,7 @@
           "year3": "2026-12-01"
         }
       },
-      "notes": "Year 3: the AWS Price List API publishes Aurora MySQL Year 3 rates only for mx-central-1 so far (as of 2026-10-20). For other regions, estimate Year 3 as the tier multiplier (2.0) x the Year 1-2 rate; AWS rounds published Year 3 rates, so the actual rate can differ by $0.001. The monthly freshness check adds each region's Year 3 rate when AWS publishes it. Only Aurora MySQL 5.7 has a Year 3 tier (it starts 2026-12-01); Aurora MySQL 8.0 has none."
+      "notes": "Year 3: the AWS Price List API publishes Aurora MySQL Year 3 rates for the Aurora MySQL 2 (5.7) usage type in 36 of 37 regions (all except us-west-2-lax-1) (checked 2026-11-26). The published Year 3 rate equals the Year 1-2 rate in the regions checked (for example us-east-1 0.10), unlike Aurora PostgreSQL and RDS, where Year 3 is double. Only Aurora MySQL 5.7 has a Year 3 tier (it starts 2026-12-01); Aurora MySQL 8.0 has none. In mx-central-1 the Price List also lists 0.21 under an Aurora MySQL 3 (8.0) Year 3 usage type; because 8.0 has no Year 3 tier, the dataset uses the 5.7 value (0.105)."
     },
     {
       "match": {
@@ -10072,7 +10111,7 @@
           "extended_instance": "2026-11-07"
         }
       },
-      "notes": "Legacy versions. Extended Support was extended to Nov 7, 2027. From Nov 7, 2026 the surcharge equals the on-demand instance price (AWS: it effectively doubles instance pricing); storage costs are not affected."
+      "notes": "Legacy versions. Extended Support was extended to Nov 7, 2027. From Nov 7, 2026 the surcharge equals the on-demand instance price (AWS: it effectively doubles instance pricing); storage costs are not affected. The AWS Price List API publishes the extension as the usage type <REGION>-EnhancedOSExtendedSupport:<instance> (6,161 SKUs on 2026-11-26). Compared on that date with the on-demand ESInstance rate of the same instance type in the same Region, 5,997 are identical and 148 differ only by rounding (less than 0.00001); 16 GovCloud instance types have no on-demand SKU to compare."
     },
     {
       "match": {
@@ -10375,7 +10414,7 @@
           "extended_instance": "2026-11-07"
         }
       },
-      "notes": "Legacy versions. Extended Support was extended to Nov 7, 2027. From Nov 7, 2026 the surcharge equals the on-demand instance price (AWS: it effectively doubles instance pricing); storage costs are not affected."
+      "notes": "Legacy versions. Extended Support was extended to Nov 7, 2027. From Nov 7, 2026 the surcharge equals the on-demand instance price (AWS: it effectively doubles instance pricing); storage costs are not affected. The AWS Price List API publishes the extension as the usage type <REGION>-EnhancedOSExtendedSupport:<instance> (6,161 SKUs on 2026-11-26). Compared on that date with the on-demand ESInstance rate of the same instance type in the same Region, 5,997 are identical and 148 differ only by rounding (less than 0.00001); 16 GovCloud instance types have no on-demand SKU to compare."
     },
     {
       "match": {
@@ -10551,6 +10590,24 @@
           "vCPUs": 48
         },
         "db.m7g.16xlarge": {
+          "vCPUs": 64
+        },
+        "db.r4.large": {
+          "vCPUs": 2
+        },
+        "db.r4.xlarge": {
+          "vCPUs": 4
+        },
+        "db.r4.2xlarge": {
+          "vCPUs": 8
+        },
+        "db.r4.4xlarge": {
+          "vCPUs": 16
+        },
+        "db.r4.8xlarge": {
+          "vCPUs": 32
+        },
+        "db.r4.16xlarge": {
           "vCPUs": 64
         },
         "db.r5.large": {
